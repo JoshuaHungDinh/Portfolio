@@ -19,9 +19,10 @@ const noMotion = {
 interface ProjectCardProps {
   project: Project;
   reversed?: boolean;
+  animate?: boolean;
 }
 
-export default function ProjectCard({ project, reversed }: ProjectCardProps) {
+export default function ProjectCard({ project, reversed, animate }: ProjectCardProps) {
   const prefersReducedMotion = useReducedMotion();
   const variants = prefersReducedMotion ? noMotion : fadeInUp;
 
@@ -31,8 +32,7 @@ export default function ProjectCard({ project, reversed }: ProjectCardProps) {
         className={styles.projectInfo}
         variants={variants}
         initial="initial"
-        whileInView="animate"
-        viewport={{ once: true, margin: "-80px" }}
+        animate={animate ? "animate" : "initial"}
         transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
       >
         <p className={styles.projectCategory}>
@@ -61,8 +61,7 @@ export default function ProjectCard({ project, reversed }: ProjectCardProps) {
         className={styles.projectVisual}
         variants={variants}
         initial="initial"
-        whileInView="animate"
-        viewport={{ once: true, margin: "-80px" }}
+        animate={animate ? "animate" : "initial"}
         transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
       >
         <PlaceholderVisual variant={project.visual} imageSrc={project.imageSrc} />

@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useReducedMotion, useInView } from "framer-motion";
 import AnimatedBorderLine from "../Hero/AnimatedBorderLine";
 import { projects } from "./selectedWorkData";
 import ProjectCard from "./ProjectCard";
@@ -24,8 +25,17 @@ export default function SelectedWork() {
   const prefersReducedMotion = useReducedMotion();
   const variants = prefersReducedMotion ? noMotion : fadeInUp;
 
+  const sentinelRef = useRef<HTMLDivElement>(null);
+  const projectsReady = useInView(sentinelRef, {
+    once: true,
+    margin: "0px 0px -90% 0px",
+  });
+
   return (
     <section className={styles.section}>
+      {/* Sentinel: projects animate once the section top reaches the nav */}
+      <div ref={sentinelRef} />
+
       <AnimatedBorderLine duration={0.8} />
 
       {/* Header row */}
@@ -72,13 +82,13 @@ export default function SelectedWork() {
 
       {/* Featured projects (01, 02) */}
       {featured.map((project, i) => (
-        <ProjectCard key={project.index} project={project} reversed={i === 1} />
+        <ProjectCard key={project.index} project={project} reversed={i === 1} animate={projectsReady} />
       ))}
 
       {/* Compact projects (03, 04) */}
       <div className={styles.compactGrid}>
         {compact.map((project, i) => (
-          <ProjectCardSmall key={project.index} project={project} delay={i * 0.1} />
+          <ProjectCardSmall key={project.index} project={project} delay={i * 0.1} animate={projectsReady} />
         ))}
       </div>
 

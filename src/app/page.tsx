@@ -4,14 +4,15 @@ import styles from "./page.module.css";
 export default function Home() {
   return (
     <main>
+      <Navbar />
       <div className={styles.fold}>
-        <Navbar />
         <Hero />
         <div className={styles.bottom}>
           <BigType />
           <FooterBar />
         </div>
       </div>
+      <div className={styles.scrollCatch} />
       <SelectedWork />
     </main>
   );

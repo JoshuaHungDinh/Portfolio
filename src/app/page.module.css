@@ -1,9 +1,16 @@
 .fold {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
   flex-direction: column;
+  overflow: hidden;
+  position: sticky;
+  top: 0;
 }
 
 .bottom {
   margin-top: auto;
+}
+
+.scrollCatch {
+  height: 4rem;
 }

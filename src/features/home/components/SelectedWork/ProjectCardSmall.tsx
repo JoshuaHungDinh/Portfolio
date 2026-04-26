@@ -18,9 +18,10 @@ const noMotion = {
 interface ProjectCardSmallProps {
   project: Project;
   delay?: number;
+  animate?: boolean;
 }
 
-export default function ProjectCardSmall({ project, delay = 0 }: ProjectCardSmallProps) {
+export default function ProjectCardSmall({ project, delay = 0, animate }: ProjectCardSmallProps) {
   const prefersReducedMotion = useReducedMotion();
   const variants = prefersReducedMotion ? noMotion : fadeInUp;
 
@@ -29,8 +30,7 @@ export default function ProjectCardSmall({ project, delay = 0 }: ProjectCardSmal
       className={styles.compactCard}
       variants={variants}
       initial="initial"
-      whileInView="animate"
-      viewport={{ once: true, margin: "-80px" }}
+      animate={animate ? "animate" : "initial"}
       transition={{ duration: 0.5, delay, ease: "easeOut" }}
     >
       <a href={project.href} className={styles.compactVisual}>

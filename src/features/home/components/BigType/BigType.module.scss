@@ -15,11 +15,10 @@
 .heading {
   font-size: clamp(5rem, 12vw, 14rem);
   font-weight: 700;
-  line-height: 0.9;
+  line-height: 1;
   letter-spacing: -0.04em;
   white-space: nowrap;
-  background: linear-gradient(0deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.4) 100%),
-    linear-gradient(rgb(178, 213, 255) 0%, rgb(223, 209, 255) 100%);
+  background: var(--accent-gradient);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;

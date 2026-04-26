@@ -1,0 +1,101 @@
+"use client";
+
+import { motion, useReducedMotion } from "framer-motion";
+import AnimatedBorderLine from "../Hero/AnimatedBorderLine";
+import { projects } from "./selectedWorkData";
+import ProjectCard from "./ProjectCard";
+import ProjectCardSmall from "./ProjectCardSmall";
+import styles from "./SelectedWork.module.scss";
+
+const fadeInUp = {
+  initial: { opacity: 0, y: 12 },
+  animate: { opacity: 1, y: 0 },
+};
+
+const noMotion = {
+  initial: { opacity: 1, y: 0 },
+  animate: { opacity: 1, y: 0 },
+};
+
+const featured = projects.slice(0, 2);
+const compact = projects.slice(2, 4);
+
+export default function SelectedWork() {
+  const prefersReducedMotion = useReducedMotion();
+  const variants = prefersReducedMotion ? noMotion : fadeInUp;
+
+  return (
+    <section className={styles.section}>
+      <AnimatedBorderLine duration={0.8} />
+
+      {/* Header row */}
+      <motion.div
+        className={styles.headerRow}
+        variants={variants}
+        initial="initial"
+        whileInView="animate"
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 0.5, delay: 0.05, ease: "easeOut" }}
+      >
+        <span>Software Developer</span>
+        <span className={styles.headerCenter}>April 2022 &mdash; Nov 2025</span>
+        <span className={styles.headerRight}>Liquid Web Inc</span>
+      </motion.div>
+
+      {/* Title area */}
+      <div className={styles.titleArea}>
+        <motion.h2
+          className={styles.displayHeading}
+          variants={variants}
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
+        >
+          Things I&apos;ve
+          <br />
+          shipped<span className={styles.greenDot} />
+        </motion.h2>
+        <motion.p
+          className={styles.titleDescription}
+          variants={variants}
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
+        >
+          A mix of side projects, open source, and production systems built at
+          small teams and one very large one. Click any project to read the case
+          study.
+        </motion.p>
+      </div>
+
+      {/* Featured projects (01, 02) */}
+      {featured.map((project, i) => (
+        <ProjectCard key={project.index} project={project} reversed={i === 1} />
+      ))}
+
+      {/* Compact projects (03, 04) */}
+      <div className={styles.compactGrid}>
+        {compact.map((project, i) => (
+          <ProjectCardSmall key={project.index} project={project} delay={i * 0.1} />
+        ))}
+      </div>
+
+      {/* Footer row */}
+      <motion.div
+        className={styles.footerRow}
+        variants={variants}
+        initial="initial"
+        whileInView="animate"
+        viewport={{ once: true, margin: "-40px" }}
+        transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
+      >
+        <span className={styles.archiveLabel}>ARCHIVE / 14 EARLIER PROJECTS</span>
+        <a href="/work" className={styles.viewAllButton}>
+          View all work &rarr;
+        </a>
+      </motion.div>
+    </section>
+  );
+}

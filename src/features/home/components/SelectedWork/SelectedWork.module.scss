@@ -1,0 +1,280 @@
+/* ── Section ── */
+.section {
+  position: relative;
+  // max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+@media (min-width: 1024px) {
+  .section {
+    padding: 0 3rem;
+  }
+}
+
+/* ── Header row ── */
+.headerRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--zinc-500);
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+.headerCenter {
+  text-align: center;
+}
+
+.headerRight {
+  text-align: right;
+}
+
+/* ── Title area ── */
+.titleArea {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 48px;
+  margin-bottom: 0;
+  padding-bottom: 80px;
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
+}
+
+@media (min-width: 768px) {
+  .titleArea {
+    grid-template-columns: 1.3fr 1fr;
+    align-items: end;
+  }
+}
+
+.displayHeading {
+  font-size: clamp(5rem, 12vw, 14rem);
+  font-weight: 700;
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+}
+
+.greenDot {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--accent-gradient);
+  margin-left: 0.1em;
+  vertical-align: baseline;
+}
+
+.titleDescription {
+  color: var(--zinc-400);
+  font-size: 1.125rem;
+  line-height: 1.7;
+  align-self: end;
+}
+
+/* ── Featured project row (01, 02) ── */
+.projectRow {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  padding: 5rem 0;
+  margin-bottom: 0;
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
+}
+
+@media (min-width: 768px) {
+  .projectRow {
+    grid-template-columns: 1fr 1.3fr;
+    align-items: center;
+  }
+
+  .projectRowReversed {
+    grid-template-columns: 1.3fr 1fr;
+  }
+}
+
+.projectRowReversed {
+  composes: projectRow;
+}
+
+@media (min-width: 768px) {
+  .projectRowReversed .projectVisual {
+    order: -1;
+  }
+}
+
+.projectInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.projectCategory {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--zinc-500);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.projectName {
+  font-size: clamp(64px, 8vw, 112px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.trademark {
+  margin-left: 0.15rem;
+  font-size: 0.6em;
+  font-weight: 500;
+  vertical-align: super;
+}
+
+.projectDescription {
+  color: var(--zinc-400);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  max-width: 40ch;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid rgba(63, 63, 70, 0.6);
+  border-radius: 9999px;
+  padding: 5px 11px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--zinc-400);
+}
+
+/* ── Project visual card ── */
+.projectVisual {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 0.5rem;
+  background: rgba(39, 39, 42, 0.6);
+  padding: 1.25rem;
+  overflow: hidden;
+}
+
+.visualImg {
+  width: 100%;
+  height: auto;
+  border-radius: 0.25rem;
+  object-fit: cover;
+}
+
+.visualSvg {
+  width: 100%;
+  height: auto;
+  max-height: 14rem;
+}
+
+.cardLabel {
+  align-self: flex-end;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--zinc-400);
+  margin-top: 1rem;
+  text-transform: uppercase;
+}
+
+/* ── Compact project grid (03, 04) ── */
+.compactGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 768px) {
+  .compactGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.compactCard {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.compactVisual {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 0.5rem;
+  background: rgba(39, 39, 42, 0.6);
+  padding: 1.25rem;
+  overflow: hidden;
+}
+
+.compactInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.compactName {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ── Footer row ── */
+.footerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 2rem;
+  border-top: 1px solid var(--zinc-800);
+}
+
+.archiveLabel {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--zinc-500);
+  text-transform: uppercase;
+}
+
+.viewAllButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  border: 1px solid var(--zinc-700);
+  padding: 0.625rem 1.25rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--foreground);
+  background: transparent;
+  transition: background-color 0.2s;
+}
+
+.viewAllButton:hover {
+  background: rgba(255, 255, 255, 0.05);
+}

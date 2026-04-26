@@ -5,7 +5,6 @@ import { motion, useReducedMotion, useInView } from "framer-motion";
 import AnimatedBorderLine from "../FirstFold/Hero/AnimatedBorderLine";
 import { projects } from "./selectedWorkData";
 import ProjectCard from "./ProjectCard/ProjectCard";
-import ProjectCardSmall from "./ProjectCardSmall/ProjectCardSmall";
 import styles from "./SelectedWork.module.scss";
 
 const fadeInUp = {
@@ -18,8 +17,6 @@ const noMotion = {
   animate: { opacity: 1, y: 0 },
 };
 
-const featured = projects.slice(0, 3);
-const compact = projects.slice(3, 4);
 
 export default function SelectedWork() {
   const prefersReducedMotion = useReducedMotion();
@@ -81,27 +78,15 @@ export default function SelectedWork() {
         </motion.p>
       </div>
 
-      {/* Featured projects (01, 02) */}
-      {featured.map((project, i) => (
+      {/* Project entries */}
+      {projects.map((project, i) => (
         <ProjectCard
           key={project.index}
           project={project}
-          reversed={i === 1}
+          reversed={i % 2 === 1}
           animate={projectsReady}
         />
       ))}
-
-      {/* Compact projects (03, 04) */}
-      <div className={styles.compactGrid}>
-        {compact.map((project, i) => (
-          <ProjectCardSmall
-            key={project.index}
-            project={project}
-            delay={i * 0.1}
-            animate={projectsReady}
-          />
-        ))}
-      </div>
 
       {/* Footer row */}
       <motion.div

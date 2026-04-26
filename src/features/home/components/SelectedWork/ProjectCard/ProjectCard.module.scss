@@ -1,48 +1,62 @@
-/* ── Featured project row (01, 02) ── */
+/* ── Project entry row — 12-column grid ── */
 .projectRow {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 2rem;
-  padding: 5rem 0;
-  margin-bottom: 0;
-  border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: 24px;
+  align-items: center;
+  padding-top: 160px;
+  padding-bottom: 80px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-@media (min-width: 768px) {
-  .projectRow {
-    grid-template-columns: 1fr 1.3fr;
-    align-items: center;
-  }
-
-  .projectRowReversed {
-    grid-template-columns: 1.3fr 1fr;
-  }
+.projectRow:first-of-type {
+  padding-top: 80px;
 }
 
-.projectRowReversed {
-  composes: projectRow;
-}
-
-@media (min-width: 768px) {
-  .projectRowReversed .projectVisual {
-    order: -1;
-  }
-}
-
-.projectInfo {
+/* ── Default (ODD): text cols 1-5, image cols 7-12 ── */
+.textBlock {
+  grid-column: 1 / 6;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  justify-content: center;
+  align-items: flex-start;
 }
 
+.imageBlock {
+  grid-column: 7 / 13;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(39, 39, 42, 0.6);
+  padding: 1.25rem;
+  overflow: hidden;
+}
+
+/* ── EVEN (reversed): image cols 1-6, text cols 8-12 ── */
+.reversed .imageBlock {
+  grid-column: 1 / 7;
+  order: -1;
+}
+
+.reversed .textBlock {
+  grid-column: 8 / 13;
+  align-items: flex-end;
+  text-align: right;
+}
+
+.reversed .tags {
+  justify-content: flex-end;
+}
+
+/* ── Text block internals ── */
 .projectCategory {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.05em;
   color: var(--zinc-500);
   text-transform: uppercase;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .projectName {
@@ -54,6 +68,7 @@
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  margin-bottom: 24px;
 }
 
 .trademark {
@@ -65,29 +80,19 @@
 
 .projectDescription {
   color: var(--zinc-400);
-  font-size: 0.9375rem;
+  font-size: 16px;
   line-height: 1.6;
-  max-width: 40ch;
+  max-width: 55ch;
+  margin-bottom: 32px;
 }
 
 .tags {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-top: 0.5rem;
 }
 
-/* ── Project visual card ── */
-.projectVisual {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  border-radius: 0.5rem;
-  background: rgba(39, 39, 42, 0.6);
-  padding: 1.25rem;
-  overflow: hidden;
-}
-
+/* ── Image block label ── */
 .cardLabel {
   align-self: flex-end;
   font-size: 0.75rem;
@@ -96,4 +101,33 @@
   color: var(--zinc-400);
   margin-top: 1rem;
   text-transform: uppercase;
+}
+
+/* ── Mobile: < 768px ── */
+@media (max-width: 767px) {
+  .projectRow {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding-top: 96px;
+    padding-bottom: 48px;
+  }
+
+  .projectRow:first-of-type {
+    padding-top: 48px;
+  }
+
+  .textBlock,
+  .imageBlock,
+  .reversed .textBlock,
+  .reversed .imageBlock {
+    grid-column: 1 / -1;
+  }
+
+  .imageBlock {
+    order: -1;
+  }
+
+  .textBlock {
+    margin-top: 24px;
+  }
 }

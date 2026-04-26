@@ -1,15 +1,14 @@
 /* ── Section ── */
 .section {
   position: relative;
-  // max-width: 1600px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 24px;
   background-color: #09090b;
 }
 
 @media (min-width: 1024px) {
   .section {
-    padding: 0 3rem;
+    padding: 0 64px;
   }
 }
 
@@ -73,20 +72,6 @@
   font-size: 1.125rem;
   line-height: 1.7;
   align-self: end;
-}
-
-/* ── Compact project grid (03, 04) ── */
-.compactGrid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2rem;
-  margin-bottom: 2rem;
-}
-
-@media (min-width: 768px) {
-  .compactGrid {
-    grid-template-columns: 1fr 1fr;
-  }
 }
 
 /* ── Footer row ── */

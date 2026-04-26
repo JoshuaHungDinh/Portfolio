@@ -27,9 +27,9 @@ export default function ProjectCard({ project, reversed, animate }: ProjectCardP
   const variants = prefersReducedMotion ? noMotion : fadeInUp;
 
   return (
-    <div className={`${styles.projectRow} ${reversed ? styles.projectRowReversed : ""}`}>
+    <div className={`${styles.projectRow} ${reversed ? styles.reversed : ""}`}>
       <motion.div
-        className={styles.projectInfo}
+        className={styles.textBlock}
         variants={variants}
         initial="initial"
         animate={animate ? "animate" : "initial"}
@@ -58,7 +58,7 @@ export default function ProjectCard({ project, reversed, animate }: ProjectCardP
 
       <motion.a
         href={project.href}
-        className={styles.projectVisual}
+        className={styles.imageBlock}
         variants={variants}
         initial="initial"
         animate={animate ? "animate" : "initial"}

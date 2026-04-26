@@ -40,13 +40,14 @@ export const projects: Project[] = [
   },
   {
     index: "03",
-    category: "DOCUMENT INTELLIGENCE / PYTHON",
-    name: "Financial Statement Extraction",
+    category: "DOCUMENT INTELLIGENCE / FINANCIAL STATEMENT EXTRACTION",
+    name: "Ledger",
     trademark: "",
     description:
       "OCR-powered API that extracts structured financial data from bank statements and tax returns using a multi-tier parsing pipeline with 14 bank templates and 25+ risk indicators.",
     tags: [],
-    visual: "document",
+    visual: "image",
+    imageSrc: "/ys-ledger-image.png",
     label: "QUALIFY/API",
     href: "/work/yieldstream-qualify",
   },

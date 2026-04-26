@@ -1,4 +1,4 @@
-import styles from "./SelectedWork.module.scss";
+import styles from "./TechTag.module.scss";
 
 interface TechTagProps {
   label: string;

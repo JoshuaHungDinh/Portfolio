@@ -1,9 +1,9 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import type { Project } from "./selectedWorkData";
-import PlaceholderVisual from "./PlaceholderVisual";
-import styles from "./SelectedWork.module.scss";
+import type { Project } from "../selectedWorkData";
+import PlaceholderVisual from "../PlaceholderVisual/PlaceholderVisual";
+import styles from "./ProjectCardSmall.module.scss";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 12 },
@@ -34,7 +34,7 @@ export default function ProjectCardSmall({ project, delay = 0, animate }: Projec
       transition={{ duration: 0.5, delay, ease: "easeOut" }}
     >
       <a href={project.href} className={styles.compactVisual}>
-        <PlaceholderVisual variant={project.visual} />
+        <PlaceholderVisual variant={project.visual} imageSrc={project.imageSrc} />
         <span className={styles.cardLabel}>{project.label} &#x2197;</span>
       </a>
       <div className={styles.compactInfo}>

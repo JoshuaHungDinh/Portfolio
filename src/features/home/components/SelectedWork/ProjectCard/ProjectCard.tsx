@@ -1,10 +1,10 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import type { Project } from "./selectedWorkData";
-import PlaceholderVisual from "./PlaceholderVisual";
-import TechTag from "./TechTag";
-import styles from "./SelectedWork.module.scss";
+import type { Project } from "../selectedWorkData";
+import PlaceholderVisual from "../PlaceholderVisual/PlaceholderVisual";
+import TechTag from "../TechTag/TechTag";
+import styles from "./ProjectCard.module.scss";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 12 },

@@ -2,10 +2,10 @@
 
 import { useRef } from "react";
 import { motion, useReducedMotion, useInView } from "framer-motion";
-import AnimatedBorderLine from "../Hero/AnimatedBorderLine";
+import AnimatedBorderLine from "../FirstFold/Hero/AnimatedBorderLine";
 import { projects } from "./selectedWorkData";
-import ProjectCard from "./ProjectCard";
-import ProjectCardSmall from "./ProjectCardSmall";
+import ProjectCard from "./ProjectCard/ProjectCard";
+import ProjectCardSmall from "./ProjectCardSmall/ProjectCardSmall";
 import styles from "./SelectedWork.module.scss";
 
 const fadeInUp = {
@@ -18,8 +18,8 @@ const noMotion = {
   animate: { opacity: 1, y: 0 },
 };
 
-const featured = projects.slice(0, 2);
-const compact = projects.slice(2, 4);
+const featured = projects.slice(0, 3);
+const compact = projects.slice(3, 4);
 
 export default function SelectedWork() {
   const prefersReducedMotion = useReducedMotion();
@@ -64,7 +64,8 @@ export default function SelectedWork() {
         >
           Things I&apos;ve
           <br />
-          shipped<span className={styles.greenDot} />
+          shipped
+          <span className={styles.greenDot} />
         </motion.h2>
         <motion.p
           className={styles.titleDescription}
@@ -82,13 +83,23 @@ export default function SelectedWork() {
 
       {/* Featured projects (01, 02) */}
       {featured.map((project, i) => (
-        <ProjectCard key={project.index} project={project} reversed={i === 1} animate={projectsReady} />
+        <ProjectCard
+          key={project.index}
+          project={project}
+          reversed={i === 1}
+          animate={projectsReady}
+        />
       ))}
 
       {/* Compact projects (03, 04) */}
       <div className={styles.compactGrid}>
         {compact.map((project, i) => (
-          <ProjectCardSmall key={project.index} project={project} delay={i * 0.1} animate={projectsReady} />
+          <ProjectCardSmall
+            key={project.index}
+            project={project}
+            delay={i * 0.1}
+            animate={projectsReady}
+          />
         ))}
       </div>
 
@@ -101,7 +112,9 @@ export default function SelectedWork() {
         viewport={{ once: true, margin: "-40px" }}
         transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
       >
-        <span className={styles.archiveLabel}>ARCHIVE / 14 EARLIER PROJECTS</span>
+        <span className={styles.archiveLabel}>
+          ARCHIVE / 14 EARLIER PROJECTS
+        </span>
         <a href="/work" className={styles.viewAllButton}>
           View all work &rarr;
         </a>

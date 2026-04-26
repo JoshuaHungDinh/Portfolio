@@ -1,4 +1,4 @@
-import styles from "./SelectedWork.module.scss";
+import styles from "./PlaceholderVisual.module.scss";
 
 interface PlaceholderVisualProps {
   variant: "dashboard" | "terminal" | "document" | "chat" | "image";

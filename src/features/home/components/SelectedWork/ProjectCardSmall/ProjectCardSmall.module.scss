@@ -1,0 +1,57 @@
+.compactCard {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.compactVisual {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 0.5rem;
+  background: rgba(39, 39, 42, 0.6);
+  padding: 1.25rem;
+  overflow: hidden;
+}
+
+.compactInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.compactName {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.projectCategory {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--zinc-500);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.projectDescription {
+  color: var(--zinc-400);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  max-width: 40ch;
+}
+
+.cardLabel {
+  align-self: flex-end;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--zinc-400);
+  margin-top: 1rem;
+  text-transform: uppercase;
+}

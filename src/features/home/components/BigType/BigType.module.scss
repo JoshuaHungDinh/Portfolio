@@ -1,0 +1,54 @@
+.section {
+  position: relative;
+  display: flex;
+  padding: 2.5rem 2rem;
+}
+
+.row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  width: 100%;
+  gap: 2rem;
+}
+
+.heading {
+  font-size: clamp(5rem, 12vw, 14rem);
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.4) 100%),
+    linear-gradient(rgb(178, 213, 255) 0%, rgb(223, 209, 255) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.tm {
+  margin-left: 0.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: normal;
+  vertical-align: super;
+}
+
+.resumeLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  border: 1px solid var(--zinc-700);
+  background: #fff;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #000;
+  white-space: nowrap;
+  margin-bottom: 0.5rem;
+  transition: background-color 0.2s;
+}
+
+.resumeLink:hover {
+  background: #e4e4e7;
+}

@@ -1,0 +1,19 @@
+.nav {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  padding: 2rem 2rem 1.5rem;
+  font-size: 0.875rem;
+}
+
+.label {
+  font-weight: 500;
+}
+
+.sub {
+  color: var(--zinc-500);
+}
+
+.right {
+  text-align: right;
+}

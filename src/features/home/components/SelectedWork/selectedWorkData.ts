@@ -14,28 +14,29 @@ export interface Project {
 export const projects: Project[] = [
   {
     index: "01",
-    category: "SOFTWARE DEVELOPER / APRIL 2022 — NOV 2025 / LIQUID WEB INC",
-    name: "GiveWP",
-    trademark: "",
-    description:
-      "The leading WordPress donation plugin powering 100k+ nonprofits. Built and maintained fundraising forms, payment gateway integrations, and donor management features.",
-    tags: ["WordPress", "PHP", "React", "Stripe"],
-    visual: "dashboard",
-    label: "GIVEWP/PLATFORM",
-    href: "/work/givewp",
-  },
-  {
-    index: "02",
-    category: "CO-FOUNDER / FULL-STACK DEVELOPER",
+    category: "CO-FOUNDER + LEAD ENGINEER / 2025—PRESENT",
     name: "YieldStream",
-    trademark: "",
+    trademark: "TM",
     description:
-      "A submission intelligence platform for MCA brokers. Replaces gut-feel lender routing with data-driven ranked recommendations using a three-layer scoring model, AI data enrichment, automated underwriting, and outcome-based learning.",
+      "An underwriting platform for MCA brokers. Replaces gut-feel lender routing with data-driven recommendations — combining a three-layer scoring model with AI enrichment and outcome-based learning.",
     tags: ["Next.js", "Supabase", "AI/ML", "TypeScript"],
     visual: "image",
     imageSrc: "/ys-marketing-page.png",
     label: "YIELDSTREAM/PLATFORM",
     href: "/work/yieldstream",
+  },
+  {
+    index: "02",
+    category: "SOFTWARE ENGINEER / LIQUID WEB INC / 2022—2025",
+    name: "GiveWP",
+    trademark: "R",
+    description:
+      "The leading WordPress donation plugin, powering 100k+ nonprofits. Built and maintained fundraising forms, payment gateway integrations, and donor management features.",
+    tags: ["WordPress", "PHP", "React", "Stripe"],
+    visual: "image",
+    imageSrc: "/givewp-form.png",
+    label: "GIVEWP/DONATION-FORM",
+    href: "/work/givewp",
   },
   {
     index: "03",

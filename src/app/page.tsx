@@ -1,4 +1,4 @@
-import { Navbar, Hero, BigType, FooterBar, SelectedWork, Timezone } from "@/features/home/components";
+import { Navbar, Hero, BigType, FooterBar, SelectedWork, Timezone, About } from "@/features/home/components";
 import styles from "./page.module.css";
 
 export default function Home() {
@@ -16,6 +16,7 @@ export default function Home() {
         <div className={styles.revealBottom}>
           <SelectedWork />
           <Timezone />
+          <About />
         </div>
         <div className={styles.spacer} />
       </div>

@@ -1,6 +1,5 @@
 import type { Project } from "../selectedWorkData";
 import PlaceholderVisual from "../PlaceholderVisual/PlaceholderVisual";
-import TechTag from "../TechTag/TechTag";
 import styles from "./ProjectCard.module.scss";
 
 interface ProjectCardProps {
@@ -25,13 +24,9 @@ export default function ProjectCard({ project, reversed }: ProjectCardProps) {
           )}
         </h3>
         <p className={styles.projectDescription}>{project.description}</p>
-        {project.tags.length > 0 && (
-          <div className={styles.tags}>
-            {project.tags.map((tag) => (
-              <TechTag key={tag} label={tag} />
-            ))}
-          </div>
-        )}
+        <a href={project.href} className={styles.caseStudyLink}>
+          Read case study <span className={styles.arrow}>&rarr;</span>
+        </a>
       </div>
 
       <a href={project.href} className={styles.imageBlock}>

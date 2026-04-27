@@ -34,8 +34,12 @@ export default function BigType() {
           <sup className={styles.tm}>TM</sup>
         </motion.h2>
         <motion.a
-          href="#resume"
+          href="#work"
           className={styles.resumeLink}
+          onClick={(e) => {
+            e.preventDefault();
+            document.getElementById("work")?.scrollIntoView({ behavior: "smooth" });
+          }}
           variants={variants}
           initial="initial"
           animate="animate"

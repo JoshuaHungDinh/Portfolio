@@ -1,0 +1,174 @@
+/* ── Section ── */
+.section {
+  position: relative;
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 96px 24px;
+  background-color: #09090b;
+}
+
+@media (min-width: 1024px) {
+  .section {
+    padding: 96px 64px;
+  }
+}
+
+/* ── Section label ── */
+.sectionLabel {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--zinc-500);
+  text-transform: uppercase;
+  margin-bottom: 64px;
+}
+
+/* ── Display heading ── */
+.displayHeading {
+  font-size: clamp(5rem, 12vw, 14rem);
+  font-weight: 700;
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+  text-align: left;
+  margin-bottom: 32px;
+}
+
+/* ── Pills ── */
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 48px;
+}
+
+/* ── Gradient text ── */
+.gradientText {
+  background: linear-gradient(rgb(178, 213, 255) 0%, rgb(223, 209, 255) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--zinc-300);
+
+  &::before {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent-gradient);
+    flex-shrink: 0;
+  }
+}
+
+/* ── Two-column bio ── */
+.bioColumns {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  max-width: 720px;
+  margin: 0 0 64px;
+}
+
+@media (min-width: 768px) {
+  .bioColumns {
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+  }
+}
+
+.bioText {
+  color: var(--zinc-400);
+  font-size: 0.9375rem;
+  line-height: 1.75;
+}
+
+/* ── Shared row (Philosophy / Currently) ── */
+.row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  padding: 48px 0;
+  border-top: 0.5px solid rgba(255, 255, 255, 0.1);
+}
+
+@media (min-width: 768px) {
+  .row {
+    grid-template-columns: 160px 1fr;
+    gap: 48px;
+  }
+}
+
+.rowLabel {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--zinc-500);
+  text-transform: uppercase;
+  padding-top: 0.35em;
+}
+
+.rowContent {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rowSubtext {
+  color: var(--zinc-400);
+  font-size: 0.9375rem;
+  line-height: 1.7;
+}
+
+/* ── Philosophy ── */
+.philosophyHeading {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.quietly {
+  font-style: italic;
+  font-weight: 400;
+  font-size: 0.45em;
+  color: var(--zinc-400);
+  vertical-align: middle;
+}
+
+/* ── Currently ── */
+.currentlyHeading {
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+}
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--zinc-400);
+  margin-top: 4px;
+}
+
+.greenDot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+}

@@ -86,10 +86,33 @@
   margin-bottom: 32px;
 }
 
-.tags {
-  display: flex;
-  flex-wrap: wrap;
+.caseStudyLink {
+  display: inline-flex;
+  align-items: center;
   gap: 0.5rem;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--zinc-300);
+  text-decoration: none;
+  padding: 0.6rem 1.25rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background:
+    linear-gradient(var(--bg, #09090b), var(--bg, #09090b)) padding-box,
+    var(--accent-gradient) border-box;
+  transition: color 0.2s ease, background 0.2s ease;
+
+  &:hover {
+    color: #fff;
+  }
+}
+
+.arrow {
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 /* ── Image block label ── */

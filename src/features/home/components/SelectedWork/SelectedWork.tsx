@@ -4,7 +4,7 @@ import styles from "./SelectedWork.module.scss";
 
 export default function SelectedWork() {
   return (
-    <section className={styles.section}>
+    <section id="work" className={styles.section}>
       <div className={styles.topBorder} />
 
       {/* Header row */}
@@ -22,9 +22,8 @@ export default function SelectedWork() {
           <span style={{ whiteSpace: "nowrap" }}>shipped<span className={styles.greenDot} /></span>
         </h2>
         <p className={styles.titleDescription}>
-          A mix of side projects, open source, and production systems built at
-          small teams and one very large one. Click any project to read the case
-          study.
+          Production systems, open source, and side projects — built at small
+          teams and one very large one. Each one written up in depth.
         </p>
       </div>
 

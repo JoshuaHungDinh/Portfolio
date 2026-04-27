@@ -18,7 +18,7 @@ export default function BigType() {
           style={{ animationDelay: "1.2s" }}
           onClick={(e) => {
             e.preventDefault();
-            document.getElementById("work")?.scrollIntoView({ behavior: "smooth" });
+            window.scrollBy({ top: window.innerHeight, behavior: "smooth" });
           }}
         >
           ↓ View Work

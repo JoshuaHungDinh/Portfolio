@@ -1,3 +1,39 @@
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes sweepIn {
+  0% {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeScale {
+  from {
+    opacity: 0;
+    transform: scale(1.02);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 .section {
   position: relative;
   display: grid;
@@ -15,6 +51,17 @@
     grid-template-columns: 1fr 1fr;
     padding: 4rem 2rem;
   }
+}
+
+.gradientBar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--zinc-800);
+  transform-origin: left;
+  animation: sweepIn 0.8s ease-out both;
 }
 
 .left {
@@ -42,9 +89,15 @@
   }
 }
 
+.headingLine {
+  display: block;
+  animation: fadeUp 0.5s ease-out both;
+}
+
 .subtitle {
   color: var(--zinc-500);
   margin-top: 1rem;
+  animation: fadeUp 0.5s ease-out both;
 }
 
 .right {
@@ -62,6 +115,7 @@
   border-radius: 0.5rem;
   overflow: hidden;
   padding: 0;
+  animation: fadeScale 0.6s ease-out both;
 }
 
 .profileImage {

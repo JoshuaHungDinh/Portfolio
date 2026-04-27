@@ -1,3 +1,26 @@
+@keyframes sweepIn {
+  0% {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .footer {
   position: relative;
   display: grid;
@@ -8,6 +31,21 @@
   font-weight: 500;
   letter-spacing: 0.05em;
   color: var(--zinc-500);
+}
+
+.borderLine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--zinc-800);
+  transform-origin: left;
+  animation: sweepIn 0.6s ease-out both;
+}
+
+.fadeIn {
+  animation: fadeIn 0.4s ease-out both;
 }
 
 .center {

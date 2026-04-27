@@ -54,6 +54,15 @@
   text-align: right;
 }
 
+.reversed .caseStudyLink {
+  flex-direction: row-reverse;
+}
+
+.reversed .arrow {
+  display: inline-block;
+  transform: scaleX(-1);
+}
+
 .reversed .tags {
   justify-content: flex-end;
 }

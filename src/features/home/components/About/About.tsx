@@ -50,10 +50,10 @@ export default function About() {
           <span className={styles.rowLabel}>PHILOSOPHY</span>
           <div className={styles.rowContent}>
             <p className={styles.philosophyHeading}>
-              <span className={styles.gradientText}>静かに</span> <em className={styles.quietly}>&mdash; quietly.</em>
+              <span className={styles.gradientText}>丁寧に</span> <em className={styles.quietly}>&mdash; with care.</em>
             </p>
             <p className={styles.rowSubtext}>
-              The way I prefer to ship. The way I prefer to work.
+              Build it once. Build it right. Move on.
             </p>
           </div>
         </div>
@@ -65,12 +65,11 @@ export default function About() {
           <span className={styles.rowLabel}>CURRENTLY</span>
           <div className={styles.rowContent}>
             <p className={styles.currentlyHeading}>
-              Open to collaboration. If you&apos;re building something serious
-              and want a hand, talk to me.
+              Open to engineering roles &mdash; full-time or contract.
             </p>
             <span className={styles.statusBadge}>
               <span className={styles.greenDot} />
-              Selectively open to new work
+              Exploring opportunities
             </span>
           </div>
         </div>

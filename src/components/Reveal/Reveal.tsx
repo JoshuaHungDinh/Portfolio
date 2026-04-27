@@ -22,18 +22,18 @@ export default function Reveal({
     const el = ref.current;
     if (!el) return;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          el.classList.add(styles.visible);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.15 },
-    );
+    let rafId: number;
+    const check = () => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.85 && rect.bottom > 0) {
+        el.classList.add(styles.visible);
+        return;
+      }
+      rafId = requestAnimationFrame(check);
+    };
 
-    observer.observe(el);
-    return () => observer.disconnect();
+    rafId = requestAnimationFrame(check);
+    return () => cancelAnimationFrame(rafId);
   }, []);
 
   return (

@@ -5,6 +5,14 @@ import * as d3 from "d3";
 import * as topojson from "topojson-client";
 import styles from "./styles.module.scss";
 
+// Prefetch topology as soon as this module is parsed (dynamic import keeps it
+// out of the critical path). The cached promise is awaited inside loadWorldData
+// so there's no duplicate fetch.
+const LAND_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2/land-110m.json";
+const topologyPromise = typeof window !== "undefined"
+  ? fetch(LAND_URL).then((r) => r.json())
+  : null;
+
 type CityType = "home" | "remote" | "hub";
 
 interface City {
@@ -129,7 +137,7 @@ export default function RotatingEarth({
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const generateDotsInPolygon = (feature: any, step = 2.0) => {
+    const generateDotsInPolygon = (feature: any, step = 2.5) => {
       const dots: [number, number][] = [];
       const [[minLng, minLat], [maxLng, maxLat]] = d3.geoBounds(feature);
       for (let lng = minLng; lng <= maxLng; lng += step) {
@@ -323,11 +331,9 @@ export default function RotatingEarth({
     const loadWorldData = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch(
-          "https://cdn.jsdelivr.net/npm/world-atlas@2/land-110m.json",
-        );
-        if (!response.ok) throw new Error("Failed to load land data");
-        const topology = await response.json();
+        const topology = topologyPromise
+          ? await topologyPromise
+          : await fetch(LAND_URL).then((r) => r.json());
         const land = topojson.feature(topology, topology.objects.land);
         landFeatures =
           land.type === "Feature"
@@ -336,7 +342,7 @@ export default function RotatingEarth({
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         landFeatures.features.forEach((feature: any) => {
-          generateDotsInPolygon(feature, 2.0).forEach((d) => allDots.push(d));
+          generateDotsInPolygon(feature, 2.5).forEach((d) => allDots.push(d));
         });
 
         setIsLoading(false);
@@ -350,17 +356,44 @@ export default function RotatingEarth({
     const rotation: [number, number] = [120, -15];
     let autoRotate = true;
     let dragging = false;
+    let visible = false;
+    let loopRunning = false;
 
-    let rafId: number;
     const tick = () => {
+      if (!visible || document.hidden) {
+        loopRunning = false;
+        return;
+      }
       pulseT += 1;
       if (autoRotate && !dragging) {
         rotation[0] += 0.18;
         projection.rotate(rotation);
       }
       render();
-      rafId = requestAnimationFrame(tick);
+      requestAnimationFrame(tick);
     };
+
+    const startLoop = () => {
+      if (loopRunning) return;
+      loopRunning = true;
+      requestAnimationFrame(tick);
+    };
+
+    // Pause RAF when globe is off-screen
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        visible = entry.isIntersecting;
+        if (visible && !document.hidden) startLoop();
+      },
+      { threshold: 0 },
+    );
+    observer.observe(canvas);
+
+    // Pause RAF when tab is hidden, resume when visible
+    const handleVisibility = () => {
+      if (!document.hidden && visible) startLoop();
+    };
+    document.addEventListener("visibilitychange", handleVisibility);
 
     const handleMouseDown = (event: MouseEvent) => {
       autoRotate = false;
@@ -433,10 +466,12 @@ export default function RotatingEarth({
     canvas.addEventListener("mousemove", handleHover);
     canvas.style.cursor = "grab";
 
-    loadWorldData().then(() => tick());
+    loadWorldData().then(() => startLoop());
 
     return () => {
-      cancelAnimationFrame(rafId);
+      visible = false;
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", handleVisibility);
       canvas.removeEventListener("mousedown", handleMouseDown);
       canvas.removeEventListener("mousemove", handleHover);
     };

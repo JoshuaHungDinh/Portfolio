@@ -1,17 +1,4 @@
-"use client";
-
-import { motion, useReducedMotion } from "framer-motion";
 import styles from "./CaseStudyHero.module.scss";
-
-const fadeInUp = {
-  initial: { opacity: 0, y: 12 },
-  animate: { opacity: 1, y: 0 },
-};
-
-const noMotion = {
-  initial: { opacity: 1, y: 0 },
-  animate: { opacity: 1, y: 0 },
-};
 
 interface CaseStudyHeroProps {
   index: string;
@@ -34,55 +21,26 @@ export default function CaseStudyHero({
   status,
   year,
 }: CaseStudyHeroProps) {
-  const prefersReducedMotion = useReducedMotion();
-  const variants = prefersReducedMotion ? noMotion : fadeInUp;
-
   return (
     <header className={styles.hero}>
       <span className={styles.borderLine} />
 
-      <motion.p
-        className={styles.category}
-        variants={variants}
-        initial="initial"
-        animate="animate"
-        transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
-      >
+      <p className={styles.category}>
         ({index}) &mdash; {category}
-      </motion.p>
+      </p>
 
-      <motion.h1
-        className={styles.name}
-        variants={variants}
-        initial="initial"
-        animate="animate"
-        transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
-      >
+      <h1 className={styles.name}>
         {name}
         {trademark && (
           <sup className={styles.trademark}>
             {trademark === "TM" ? "\u2122" : "\u00AE"}
           </sup>
         )}
-      </motion.h1>
+      </h1>
 
-      <motion.p
-        className={styles.subtitle}
-        variants={variants}
-        initial="initial"
-        animate="animate"
-        transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
-      >
-        {subtitle}
-      </motion.p>
+      <p className={styles.subtitle}>{subtitle}</p>
 
-      <motion.div
-        className={styles.meta}
-        variants={variants}
-        initial="initial"
-        animate="animate"
-        transition={{ duration: 0.5, delay: 0.4, ease: "easeOut" }}
-      >
+      <div className={styles.meta}>
         <div className={styles.tags}>
           {tags.map((tag) => (
             <span key={tag} className={styles.tag}>
@@ -97,7 +55,7 @@ export default function CaseStudyHero({
           </span>
           <span className={styles.year}>{year}</span>
         </div>
-      </motion.div>
+      </div>
     </header>
   );
 }

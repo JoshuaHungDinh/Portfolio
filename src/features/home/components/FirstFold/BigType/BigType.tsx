@@ -1,52 +1,36 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
-import AnimatedBorderLine from "../Hero/AnimatedBorderLine";
 import styles from "./BigType.module.scss";
 
-const fadeInUp = {
-  initial: { opacity: 0, y: 12 },
-  animate: { opacity: 1, y: 0 },
-};
-
-const noMotion = {
-  initial: { opacity: 1, y: 0 },
-  animate: { opacity: 1, y: 0 },
-};
-
 export default function BigType() {
-  const prefersReducedMotion = useReducedMotion();
-  const variants = prefersReducedMotion ? noMotion : fadeInUp;
-
   return (
     <section className={styles.section}>
-      <AnimatedBorderLine duration={0.8} delay={0.6} />
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          height: 1,
+          background: "var(--zinc-800)",
+        }}
+      />
 
       <div className={styles.row}>
-        <motion.h2
-          className={styles.heading}
-          variants={variants}
-          initial="initial"
-          animate="animate"
-          transition={{ duration: 0.5, delay: 0.75, ease: "easeOut" }}
-        >
+        <h2 className={styles.heading}>
           Engineer
           <sup className={styles.tm}>TM</sup>
-        </motion.h2>
-        <motion.a
+        </h2>
+        <a
           href="#work"
           className={styles.resumeLink}
           onClick={(e) => {
             e.preventDefault();
             document.getElementById("work")?.scrollIntoView({ behavior: "smooth" });
           }}
-          variants={variants}
-          initial="initial"
-          animate="animate"
-          transition={{ duration: 0.5, delay: 0.9, ease: "easeOut" }}
         >
           ↓ View Work
-        </motion.a>
+        </a>
       </div>
     </section>
   );

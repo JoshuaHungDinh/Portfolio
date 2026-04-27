@@ -2,37 +2,31 @@
 
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
-import Legend from "@/features/GlobalRemote/components/Legend/Legend";
+import Legend from "./Legend/Legend";
 
 import styles from "./Timezone.module.scss";
 
 const RotatingEarth = dynamic(
-  () => import("@/features/GlobalRemote/components/AnimatedGlobe"),
+  () => import("./AnimatedGlobe"),
   { ssr: false },
 );
 
 export default function Timezone() {
   const [shouldMount, setShouldMount] = useState(false);
   const [revealed, setRevealed] = useState(false);
-  const sectionRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  // Lazy mount the globe when close to viewport
+  // Start loading the globe once user scrolls past the first fold
+  // (into the "Things I've shipped" section), giving it a head start
   useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setShouldMount(true);
-          observer.disconnect();
-        }
-      },
-      { rootMargin: "1200px" },
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
+    const onScroll = () => {
+      if (window.scrollY > window.innerHeight * 0.7) {
+        setShouldMount(true);
+        window.removeEventListener("scroll", onScroll);
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   // Trigger text animations when section scrolls into view
@@ -72,7 +66,6 @@ export default function Timezone() {
         </p>
 
         <div
-          ref={sectionRef}
           className={`${styles.globeWrapper} ${revealed ? styles.globeFadeIn : ""}`}
           style={{ opacity: revealed ? undefined : 0, animationDelay: revealed ? "0.35s" : undefined }}
         >

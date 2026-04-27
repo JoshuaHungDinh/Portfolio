@@ -294,7 +294,7 @@ const MAX_REASONING = 3; // Gemini calls limited to top 3 lenders`}
               traced to a specific signal.
             </p>
             <p>
-              <strong>Gemini 2.0 Flash Lite</strong> handles two tasks: bank
+              <strong>Gemini 2.0 Flash Lite</strong>{" "}handles two tasks: bank
               statement analysis (extracting 20+ financial metrics from
               OCR&apos;d text) and lender reasoning (generating natural-language
               explanations for the top 3 recommendations). I call Gemini

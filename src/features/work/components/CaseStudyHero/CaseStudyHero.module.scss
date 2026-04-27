@@ -10,7 +10,32 @@
   left: 0;
   right: 0;
   height: 1px;
-  background: var(--zinc-800);
+  background: linear-gradient(90deg, transparent, #b2d5ff, #dfd1ff, transparent);
+  transform-origin: left;
+  animation: sweepIn 1.2s ease-out forwards, fadeOut 0.6s ease-in 2s forwards;
+}
+
+@keyframes sweepIn {
+  0% {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 .category {

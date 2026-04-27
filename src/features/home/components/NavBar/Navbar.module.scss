@@ -11,7 +11,6 @@
   padding: 0 2rem;
   font-size: 0.875rem;
   background-color: var(--background, #000);
-  backdrop-filter: blur(12px);
 }
 
 .borderLine {
@@ -22,7 +21,14 @@
   height: 1px;
   background: linear-gradient(90deg, transparent, #b2d5ff, #dfd1ff, transparent);
   transform-origin: left;
+  will-change: transform, opacity;
   animation: sweepIn 1.2s ease-out forwards, fadeOut 0.6s ease-in 2s forwards;
+}
+
+.fadeIn {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: navFadeIn 0.4s ease-out forwards;
 }
 
 @keyframes sweepIn {
@@ -45,6 +51,17 @@
   }
   100% {
     opacity: 0;
+  }
+}
+
+@keyframes navFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 

@@ -1,0 +1,50 @@
+/* ── Section ── */
+.section {
+  position: relative;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 96px 24px 0;
+  background-color: #09090b;
+  border-left: 0.5px solid rgba(255, 255, 255, 0.1);
+  border-right: 0.5px solid rgba(255, 255, 255, 0.1);
+}
+
+@media (min-width: 1024px) {
+  .section {
+    padding: 96px 64px 0;
+  }
+}
+
+/* ── Content layout ── */
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-top: 64px;
+  padding-bottom: 96px;
+}
+
+/* ── Text ── */
+.displayHeading {
+  font-size: clamp(3rem, 8vw, 8rem);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  text-align: center;
+  width: 100%;
+}
+
+.subtitle {
+  color: var(--zinc-400);
+  font-size: 1.125rem;
+  line-height: 1.7;
+  max-width: 480px;
+  margin-top: 24px;
+  text-align: center;
+}
+
+/* ── Globe ── */
+.globeWrapper {
+  margin-top: 48px;
+}

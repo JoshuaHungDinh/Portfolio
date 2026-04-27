@@ -8,6 +8,15 @@
   background-color: #09090b;
 }
 
+.topBorder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--zinc-800);
+}
+
 @media (min-width: 1024px) {
   .section {
     padding: 96px 64px 0;
@@ -82,7 +91,7 @@
   justify-content: space-between;
   align-items: center;
   padding-top: 2rem;
-  border-top: 1px solid var(--zinc-800);
+  padding-bottom: 2rem;
 }
 
 .archiveLabel {

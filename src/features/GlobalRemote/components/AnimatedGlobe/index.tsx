@@ -3,14 +3,17 @@
 import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import * as topojson from "topojson-client";
+import styles from "./styles.module.scss";
+
+type CityType = "home" | "remote" | "hub";
 
 interface City {
   name: string;
   country: string;
   lat: number;
   lon: number;
-  home?: boolean;
-  featured?: boolean;
+  type: CityType;
+  label?: string;
 }
 
 interface RotatingEarthProps {
@@ -21,14 +24,16 @@ interface RotatingEarthProps {
 }
 
 const DEFAULT_CITIES: City[] = [
-  { name: "San Diego", country: "USA", lat: 32.72, lon: -117.16, home: true },
-  { name: "Tokyo", country: "Japan", lat: 35.68, lon: 139.69, featured: true },
-  { name: "Seoul", country: "South Korea", lat: 37.57, lon: 126.98 },
-  { name: "Singapore", country: "Singapore", lat: 1.35, lon: 103.82 },
-  { name: "Sydney", country: "Australia", lat: -33.87, lon: 151.21 },
-  { name: "Vancouver", country: "Canada", lat: 49.28, lon: -123.12 },
-  { name: "New York", country: "USA", lat: 40.71, lon: -74.01 },
-  { name: "London", country: "UK", lat: 51.51, lon: -0.13 },
+  { name: "San Diego", country: "USA", lat: 32.72, lon: -117.16, type: "home", label: "Home base" },
+  { name: "Tokyo", country: "Japan", lat: 35.68, lon: 139.69, type: "remote", label: "Remote — family based here" },
+  { name: "Seoul", country: "South Korea", lat: 37.57, lon: 126.98, type: "remote", label: "Remote — JST/KST region" },
+  { name: "Osaka", country: "Japan", lat: 34.69, lon: 135.50, type: "remote", label: "Remote — family nearby" },
+  { name: "London", country: "UK", lat: 51.51, lon: -0.13, type: "hub" },
+  { name: "New York", country: "USA", lat: 40.71, lon: -74.01, type: "hub" },
+  { name: "Singapore", country: "Singapore", lat: 1.35, lon: 103.82, type: "hub" },
+  { name: "Sydney", country: "Australia", lat: -33.87, lon: 151.21, type: "hub" },
+  { name: "Rome", country: "Italy", lat: 41.90, lon: 12.50, type: "hub" },
+  { name: "Madrid", country: "Spain", lat: 40.42, lon: -3.70, type: "hub" },
 ];
 
 export default function RotatingEarth({
@@ -52,7 +57,7 @@ export default function RotatingEarth({
 
     const containerWidth = Math.min(width, window.innerWidth - 40);
     const containerHeight = Math.min(height, window.innerHeight - 100);
-    const radius = Math.min(containerWidth, containerHeight) / 2.3;
+    const radius = Math.min(containerWidth, containerHeight) / 2.4;
 
     const dpr = window.devicePixelRatio || 1;
     canvas.width = containerWidth * dpr;
@@ -61,15 +66,16 @@ export default function RotatingEarth({
     canvas.style.height = `${containerHeight}px`;
     context.scale(dpr, dpr);
 
-    // ---- DARK THEME COLORS (sampled from --accent-gradient) ----
+    // Colors sampled from --accent-gradient
     const OCEAN_FILL = "#0a0a0f";
     const GLOBE_STROKE = "rgba(206, 224, 255, 0.18)";
     const GRATICULE_STROKE = "rgba(206, 224, 255, 0.07)";
     const LAND_STROKE = "rgba(223, 209, 255, 0.28)";
-    const DOT_FILL_TOP = "rgba(206, 224, 255, 0.65)"; // upper hemisphere — blue
-    const DOT_FILL_BOTTOM = "rgba(223, 209, 255, 0.65)"; // lower — lavender
-    const ACCENT = "#b2d5ff";
-    const ACCENT_SOFT = "#dfd1ff";
+    const DOT_FILL_TOP = "rgba(206, 224, 255, 0.6)";
+    const DOT_FILL_BOTTOM = "rgba(223, 209, 255, 0.6)";
+    const ACCENT_BLUE = "#b2d5ff";
+    const ACCENT_LAVENDER = "#dfd1ff";
+    const HUB_COLOR = "rgba(255, 255, 255, 0.85)";
 
     const projection = d3
       .geoOrthographic()
@@ -145,16 +151,16 @@ export default function RotatingEarth({
       return pts;
     };
 
-    const isPointVisible = (lon: number, lat: number): boolean => {
+    const visibilityCos = (lon: number, lat: number): number => {
       const r = projection.rotate();
       const lambda = (-r[0] * Math.PI) / 180;
       const phi = (-r[1] * Math.PI) / 180;
       const lonR = (lon * Math.PI) / 180;
       const latR = (lat * Math.PI) / 180;
-      const cosC =
+      return (
         Math.sin(phi) * Math.sin(latR) +
-        Math.cos(phi) * Math.cos(latR) * Math.cos(lonR + lambda);
-      return cosC > 0;
+        Math.cos(phi) * Math.cos(latR) * Math.cos(lonR + lambda)
+      );
     };
 
     const allDots: [number, number][] = [];
@@ -164,12 +170,10 @@ export default function RotatingEarth({
 
     const render = () => {
       context.clearRect(0, 0, containerWidth, containerHeight);
-
       const cx = containerWidth / 2;
       const cy = containerHeight / 2;
       const currentScale = projection.scale();
 
-      // Ocean
       context.beginPath();
       context.arc(cx, cy, currentScale, 0, 2 * Math.PI);
       context.fillStyle = OCEAN_FILL;
@@ -179,122 +183,139 @@ export default function RotatingEarth({
       context.stroke();
 
       if (landFeatures) {
-        // Graticule
-        const graticule = d3.geoGraticule();
         context.beginPath();
-        path(graticule());
+        path(d3.geoGraticule()());
         context.strokeStyle = GRATICULE_STROKE;
         context.lineWidth = 0.5;
         context.stroke();
 
-        // Land outlines
         context.beginPath();
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        landFeatures.features.forEach((feature: any) => path(feature));
+        landFeatures.features.forEach((f: any) => path(f));
         context.strokeStyle = LAND_STROKE;
         context.lineWidth = 0.6;
         context.stroke();
 
-        // Halftone dots — vertical gradient from blue (top) to lavender (bottom)
         const r2 = currentScale * currentScale;
         for (let i = 0; i < allDots.length; i++) {
-          const projected = projection(allDots[i]);
-          if (!projected) continue;
-          const dx = projected[0] - cx;
-          const dy = projected[1] - cy;
+          const p = projection(allDots[i]);
+          if (!p) continue;
+          const dx = p[0] - cx;
+          const dy = p[1] - cy;
           if (dx * dx + dy * dy > r2) continue;
-          const verticalT =
-            (projected[1] - (cy - currentScale)) / (currentScale * 2);
+          const verticalT = (p[1] - (cy - currentScale)) / (currentScale * 2);
           context.fillStyle = verticalT < 0.5 ? DOT_FILL_TOP : DOT_FILL_BOTTOM;
           context.beginPath();
-          context.arc(projected[0], projected[1], 1.1, 0, 2 * Math.PI);
+          context.arc(p[0], p[1], 1.1, 0, 2 * Math.PI);
           context.fill();
         }
       }
 
-      // Animated arc from home → featured city
-      const home = cities.find((c) => c.home);
-      const featured = cities.find((c) => c.featured);
-      if (home && featured) {
-        const arcPts = greatCirclePoints(
-          [home.lon, home.lat],
-          [featured.lon, featured.lat],
-          80,
-        );
+      const home = cities.find((c) => c.type === "home");
+      const connectedCities = cities.filter((c) => c.type !== "home");
+      if (home) {
+        connectedCities.forEach((target, ri) => {
+          const arcPts = greatCirclePoints(
+            [home.lon, home.lat],
+            [target.lon, target.lat],
+            80,
+          );
 
-        context.beginPath();
-        let started = false;
-        for (let i = 0; i < arcPts.length; i++) {
-          const visible = isPointVisible(arcPts[i][0], arcPts[i][1]);
-          const p = projection(arcPts[i]);
-          if (visible && p) {
-            if (!started) {
-              context.moveTo(p[0], p[1]);
-              started = true;
+          const arcColor = target.type === "remote" ? ACCENT_LAVENDER : ACCENT_BLUE;
+
+          context.beginPath();
+          let started = false;
+          for (let i = 0; i < arcPts.length; i++) {
+            const visible = visibilityCos(arcPts[i][0], arcPts[i][1]) > 0;
+            const p = projection(arcPts[i]);
+            if (visible && p) {
+              if (!started) {
+                context.moveTo(p[0], p[1]);
+                started = true;
+              } else {
+                context.lineTo(p[0], p[1]);
+              }
             } else {
-              context.lineTo(p[0], p[1]);
+              started = false;
             }
-          } else {
-            started = false;
           }
-        }
-        context.strokeStyle = ACCENT;
-        context.lineWidth = 1.5;
-        context.globalAlpha = 0.75;
-        context.stroke();
-        context.globalAlpha = 1;
+          context.strokeStyle = arcColor;
+          context.lineWidth = 1.5;
+          context.globalAlpha = 0.55;
+          context.stroke();
+          context.globalAlpha = 1;
 
-        // Traveling pulse along the arc
-        const t = (pulseT * 0.012) % 1;
-        const idx = Math.floor(t * arcPts.length);
-        const arcPt = arcPts[Math.min(idx, arcPts.length - 1)];
-        if (isPointVisible(arcPt[0], arcPt[1])) {
-          const p = projection(arcPt);
-          if (p) {
-            const pulseScale = 0.6 + Math.sin(t * Math.PI) * 1.2;
-            context.beginPath();
-            context.arc(p[0], p[1], 5 * pulseScale, 0, 2 * Math.PI);
-            context.fillStyle = ACCENT;
-            context.globalAlpha = 0.25;
-            context.fill();
-            context.globalAlpha = 1;
-            context.beginPath();
-            context.arc(p[0], p[1], 2.5, 0, 2 * Math.PI);
-            context.fillStyle = "#ffffff";
-            context.fill();
+          // Stagger the traveling dot per arc
+          const t = ((pulseT * 0.012) + ri * 0.15) % 1;
+          const idx = Math.floor(t * arcPts.length);
+          const arcPt = arcPts[Math.min(idx, arcPts.length - 1)];
+          if (visibilityCos(arcPt[0], arcPt[1]) > 0) {
+            const p = projection(arcPt);
+            if (p) {
+              const ps = 0.6 + Math.sin(t * Math.PI) * 1.2;
+              context.beginPath();
+              context.arc(p[0], p[1], 5 * ps, 0, 2 * Math.PI);
+              context.fillStyle = arcColor;
+              context.globalAlpha = 0.25;
+              context.fill();
+              context.globalAlpha = 1;
+              context.beginPath();
+              context.arc(p[0], p[1], 2.5, 0, 2 * Math.PI);
+              context.fillStyle = "#ffffff";
+              context.fill();
+            }
           }
-        }
+        });
       }
 
-      // City markers
-      cities.forEach((city) => {
-        if (!isPointVisible(city.lon, city.lat)) return;
+      const visibleCities = cities
+        .map((c) => ({ city: c, vis: visibilityCos(c.lon, c.lat) }))
+        .filter((x) => x.vis > 0)
+        .sort((a, b) => a.vis - b.vis);
+
+      visibleCities.forEach(({ city }) => {
         const p = projection([city.lon, city.lat]);
         if (!p) return;
 
-        if (city.home) {
+        if (city.type === "home") {
           const pulse = Math.sin(pulseT * 0.04) * 0.5 + 0.5;
           context.beginPath();
-          context.arc(p[0], p[1], 4 + pulse * 12, 0, 2 * Math.PI);
-          context.fillStyle = ACCENT;
+          context.arc(p[0], p[1], 4 + pulse * 14, 0, 2 * Math.PI);
+          context.fillStyle = ACCENT_BLUE;
           context.globalAlpha = 0.18 * (1 - pulse * 0.6);
           context.fill();
           context.globalAlpha = 1;
-
           context.beginPath();
-          context.arc(p[0], p[1], 4, 0, 2 * Math.PI);
-          context.fillStyle = ACCENT;
+          context.arc(p[0], p[1], 5, 0, 2 * Math.PI);
+          context.fillStyle = ACCENT_BLUE;
           context.fill();
-
+          context.beginPath();
+          context.arc(p[0], p[1], 2.5, 0, 2 * Math.PI);
+          context.fillStyle = "#ffffff";
+          context.fill();
+        } else if (city.type === "remote") {
+          const pulse = Math.sin(pulseT * 0.04) * 0.5 + 0.5;
+          context.beginPath();
+          context.arc(p[0], p[1], 4 + pulse * 12, 0, 2 * Math.PI);
+          context.fillStyle = ACCENT_LAVENDER;
+          context.globalAlpha = 0.18 * (1 - pulse * 0.6);
+          context.fill();
+          context.globalAlpha = 1;
+          context.beginPath();
+          context.arc(p[0], p[1], 4.5, 0, 2 * Math.PI);
+          context.fillStyle = ACCENT_LAVENDER;
+          context.fill();
           context.beginPath();
           context.arc(p[0], p[1], 2, 0, 2 * Math.PI);
           context.fillStyle = "#ffffff";
           context.fill();
         } else {
           context.beginPath();
-          context.arc(p[0], p[1], city.featured ? 3.5 : 2.5, 0, 2 * Math.PI);
-          context.fillStyle = city.featured ? ACCENT : ACCENT_SOFT;
+          context.arc(p[0], p[1], 2.5, 0, 2 * Math.PI);
+          context.fillStyle = HUB_COLOR;
+          context.globalAlpha = 0.7;
           context.fill();
+          context.globalAlpha = 1;
         }
       });
     };
@@ -315,8 +336,7 @@ export default function RotatingEarth({
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         landFeatures.features.forEach((feature: any) => {
-          const dots = generateDotsInPolygon(feature, 2.0);
-          dots.forEach((d) => allDots.push(d));
+          generateDotsInPolygon(feature, 2.0).forEach((d) => allDots.push(d));
         });
 
         setIsLoading(false);
@@ -383,16 +403,22 @@ export default function RotatingEarth({
       const my = event.clientY - rect.top;
       let found: City | null = null;
       for (const city of cities) {
-        if (!isPointVisible(city.lon, city.lat)) continue;
+        if (visibilityCos(city.lon, city.lat) <= 0) continue;
         const p = projection([city.lon, city.lat]);
         if (!p) continue;
-        if (Math.hypot(p[0] - mx, p[1] - my) < 10) {
+        if (Math.hypot(p[0] - mx, p[1] - my) < 12) {
           found = city;
           break;
         }
       }
       if (found) {
-        tooltip.textContent = `${found.name}, ${found.country}`;
+        const subtitle =
+          found.label || (found.type === "hub" ? "Open to relocate" : "");
+        tooltip.innerHTML =
+          `<div style="font-weight:500">${found.name}, ${found.country}</div>` +
+          (subtitle
+            ? `<div style="color:#8b8b95; font-size:11px; margin-top:2px">${subtitle}</div>`
+            : "");
         tooltip.style.left = `${mx + 12}px`;
         tooltip.style.top = `${my - 8}px`;
         tooltip.style.opacity = "1";
@@ -418,42 +444,26 @@ export default function RotatingEarth({
 
   if (error) {
     return (
-      <div
-        className={`flex items-center justify-center bg-card rounded-2xl p-8 ${className}`}
-      >
-        <div className="text-center">
-          <p className="text-destructive font-semibold mb-2">
+      <div className={`${styles.errorWrapper} ${className}`}>
+        <div>
+          <p className={styles.errorTitle}>
             Error loading Earth visualization
           </p>
-          <p className="text-muted-foreground text-sm">{error}</p>
+          <p className={styles.errorMessage}>{error}</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className={`relative ${className}`}>
-      <canvas
-        ref={canvasRef}
-        className="w-full h-auto"
-        style={{ maxWidth: "100%", height: "auto" }}
-      />
-      <div
-        ref={tooltipRef}
-        className="absolute pointer-events-none rounded-md px-2 py-1 text-xs whitespace-nowrap z-10"
-        style={{
-          background: "rgba(20, 20, 28, 0.95)",
-          border: "0.5px solid rgba(255, 255, 255, 0.12)",
-          color: "#f5f5f7",
-          opacity: 0,
-          transition: "opacity 0.15s",
-        }}
-      />
-      {isLoading && (
-        <div className="absolute inset-0 flex items-center justify-center text-neutral-500 text-sm">
-          Loading globe…
-        </div>
-      )}
+    <div className={`${styles.wrapper} ${className}`}>
+      <div className={styles.canvasWrapper}>
+        <canvas ref={canvasRef} className={styles.canvas} />
+        <div ref={tooltipRef} className={styles.tooltip} />
+        {isLoading && (
+          <div className={styles.loading}>Loading globe…</div>
+        )}
+      </div>
     </div>
   );
 }

@@ -1,0 +1,63 @@
+/* ── Globe wrapper ── */
+.wrapper {
+  position: relative;
+}
+
+.canvasWrapper {
+  position: relative;
+}
+
+.canvas {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+}
+
+/* ── Tooltip ── */
+.tooltip {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  z-index: 10;
+  background: rgba(20, 20, 28, 0.96);
+  border: 0.5px solid rgba(255, 255, 255, 0.12);
+  color: #f5f5f7;
+  opacity: 0;
+  transition: opacity 0.15s;
+  line-height: 1.4;
+}
+
+/* ── Loading overlay ── */
+.loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #737373;
+  font-size: 0.875rem;
+}
+
+/* ── Error state ── */
+.errorWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  padding: 32px;
+  text-align: center;
+}
+
+.errorTitle {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #ef4444;
+}
+
+.errorMessage {
+  font-size: 0.875rem;
+  color: #a1a1aa;
+}

@@ -1,0 +1,82 @@
+/* ── Legend grid ── */
+.legend {
+  display: flex;
+  gap: 32px;
+  margin-top: 0;
+  width: 100%;
+  max-width: 860px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 599px) {
+  .legend {
+    flex-direction: column;
+  }
+}
+
+/* ── Card shared ── */
+.card {
+  flex: 1;
+  padding: 24px 28px;
+  text-align: left;
+}
+
+.cardBlue {
+  background: rgba(178, 213, 255, 0.04);
+  border: 0.5px solid rgba(178, 213, 255, 0.15);
+  border-radius: 12px;
+}
+
+.cardLavender {
+  background: rgba(223, 209, 255, 0.04);
+  border: 0.5px solid rgba(223, 209, 255, 0.18);
+  border-radius: 12px;
+}
+
+/* ── Card header ── */
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dotBlue {
+  background: #b2d5ff;
+  box-shadow: 0 0 8px rgba(178, 213, 255, 0.6);
+}
+
+.dotLavender {
+  background: #dfd1ff;
+  box-shadow: 0 0 8px rgba(223, 209, 255, 0.6);
+}
+
+.label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.labelBlue {
+  color: #b2d5ff;
+}
+
+.labelLavender {
+  color: #dfd1ff;
+}
+
+/* ── Card body ── */
+.cardBody {
+  font-size: 1rem;
+  line-height: 1.55;
+  color: #d4d4dc;
+}

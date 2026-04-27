@@ -1,17 +1,4 @@
-"use client";
-
-import { motion, useReducedMotion } from "framer-motion";
 import styles from "./Navbar.module.scss";
-
-const fadeIn = {
-  initial: { opacity: 0, y: 8 },
-  animate: { opacity: 1, y: 0 },
-};
-
-const noMotion = {
-  initial: { opacity: 1, y: 0 },
-  animate: { opacity: 1, y: 0 },
-};
 
 const socialLinks = [
   {
@@ -58,9 +45,6 @@ const socialLinks = [
 ];
 
 export default function Navbar() {
-  const prefersReducedMotion = useReducedMotion();
-  const variants = prefersReducedMotion ? noMotion : fadeIn;
-
   return (
     <nav className={styles.nav}>
       <span className={styles.borderLine} />
@@ -73,23 +57,12 @@ export default function Navbar() {
           </linearGradient>
         </defs>
       </svg>
-      <motion.div
-        variants={variants}
-        initial="initial"
-        animate="animate"
-        transition={{ duration: 0.4, delay: 0.05, ease: "easeOut" }}
-      >
+      <div className={styles.fadeIn} style={{ animationDelay: "0.05s" }}>
         <p className={styles.label}>JoshuaHungDinh®</p>
         <p className={styles.sub}>v2026.04</p>
-      </motion.div>
+      </div>
 
-      <motion.div
-        className={styles.socials}
-        variants={variants}
-        initial="initial"
-        animate="animate"
-        transition={{ duration: 0.4, delay: 0.15, ease: "easeOut" }}
-      >
+      <div className={`${styles.socials} ${styles.fadeIn}`} style={{ animationDelay: "0.15s" }}>
         {socialLinks.map((link) => (
           <div key={link.label} className={styles.socialLinkWrapper}>
             <a
@@ -104,20 +77,14 @@ export default function Navbar() {
             <span className={styles.tooltip}>{link.tooltip}</span>
           </div>
         ))}
-      </motion.div>
+      </div>
 
-      <motion.div
-        className={styles.right}
-        variants={variants}
-        initial="initial"
-        animate="animate"
-        transition={{ duration: 0.4, delay: 0.25, ease: "easeOut" }}
-      >
+      <div className={`${styles.right} ${styles.fadeIn}`} style={{ animationDelay: "0.25s" }}>
         <div className={styles.locationRow}>
           <p className={styles.label}>Based in San Diego ☀</p>
           <p className={styles.sub}>Software - Web Systems</p>
         </div>
-      </motion.div>
+      </div>
     </nav>
   );
 }

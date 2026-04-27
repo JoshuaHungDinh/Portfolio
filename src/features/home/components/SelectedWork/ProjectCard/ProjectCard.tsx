@@ -1,20 +1,7 @@
-"use client";
-
-import { motion, useReducedMotion } from "framer-motion";
 import type { Project } from "../selectedWorkData";
 import PlaceholderVisual from "../PlaceholderVisual/PlaceholderVisual";
 import TechTag from "../TechTag/TechTag";
 import styles from "./ProjectCard.module.scss";
-
-const fadeInUp = {
-  initial: { opacity: 0, y: 12 },
-  animate: { opacity: 1, y: 0 },
-};
-
-const noMotion = {
-  initial: { opacity: 1, y: 0 },
-  animate: { opacity: 1, y: 0 },
-};
 
 interface ProjectCardProps {
   project: Project;
@@ -22,19 +9,10 @@ interface ProjectCardProps {
   animate?: boolean;
 }
 
-export default function ProjectCard({ project, reversed, animate }: ProjectCardProps) {
-  const prefersReducedMotion = useReducedMotion();
-  const variants = prefersReducedMotion ? noMotion : fadeInUp;
-
+export default function ProjectCard({ project, reversed }: ProjectCardProps) {
   return (
     <div className={`${styles.projectRow} ${reversed ? styles.reversed : ""}`}>
-      <motion.div
-        className={styles.textBlock}
-        variants={variants}
-        initial="initial"
-        animate={animate ? "animate" : "initial"}
-        transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
-      >
+      <div className={styles.textBlock}>
         <p className={styles.projectCategory}>
           ({project.index}) &mdash; {project.category}
         </p>
@@ -54,19 +32,12 @@ export default function ProjectCard({ project, reversed, animate }: ProjectCardP
             ))}
           </div>
         )}
-      </motion.div>
+      </div>
 
-      <motion.a
-        href={project.href}
-        className={styles.imageBlock}
-        variants={variants}
-        initial="initial"
-        animate={animate ? "animate" : "initial"}
-        transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
-      >
+      <a href={project.href} className={styles.imageBlock}>
         <PlaceholderVisual variant={project.visual} imageSrc={project.imageSrc} />
         <span className={styles.cardLabel}>{project.label} &#x2197;</span>
-      </motion.a>
+      </a>
     </div>
   );
 }

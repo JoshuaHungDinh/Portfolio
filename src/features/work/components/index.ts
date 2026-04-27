@@ -6,3 +6,4 @@ export { default as MetricCard } from "./MetricCard/MetricCard";
 export { default as CaseStudyFooter } from "./CaseStudyFooter/CaseStudyFooter";
 export { default as ScoringDiagram } from "./Diagram/ScoringDiagram";
 export { default as PipelineDiagram } from "./Diagram/PipelineDiagram";
+export { default as ExtractionCascadeDiagram } from "./Diagram/ExtractionCascadeDiagram";

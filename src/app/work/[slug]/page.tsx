@@ -9,6 +9,7 @@ import {
   CaseStudyFooter,
   ScoringDiagram,
   PipelineDiagram,
+  ExtractionCascadeDiagram,
 } from "@/features/work/components";
 import styles from "./page.module.scss";
 
@@ -17,6 +18,11 @@ const caseStudies: Record<string, { title: string; description: string }> = {
     title: "YieldStream | Joshua Dinh",
     description:
       "Case study: building an underwriting intelligence platform for MCA brokers.",
+  },
+  "yieldstream-qualify": {
+    title: "Ledger | Joshua Dinh",
+    description:
+      "Case study: a document intelligence microservice for financial statement extraction.",
   },
 };
 
@@ -42,11 +48,10 @@ export default async function CaseStudyPage({
 }) {
   const { slug } = await params;
 
-  if (slug !== "yieldstream") {
-    notFound();
-  }
+  if (slug === "yieldstream") return <YieldStreamCaseStudy />;
+  if (slug === "yieldstream-qualify") return <LedgerCaseStudy />;
 
-  return <YieldStreamCaseStudy />;
+  notFound();
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -537,6 +542,359 @@ const MAX_REASONING = 3; // Gemini calls limited to top 3 lenders`}
           ]}
           links={[
             { label: "Ledger case study", href: "/work/yieldstream-qualify" },
+            { label: "Back to portfolio", href: "/" },
+          ]}
+          updatedAt="April 2026"
+        />
+      </div>
+    </div>
+  );
+}
+
+/* ═════════════════════════════════════════════════��═════════
+   LEDGER CASE STUDY
+   ═══════════════════════════════════════════════════════════ */
+
+function LedgerCaseStudy() {
+  return (
+    <div className={styles.page}>
+      <nav className={styles.nav}>
+        <BackLink />
+      </nav>
+
+      <div className={styles.container}>
+        <CaseStudyHero
+          index="03"
+          category="DOCUMENT INTELLIGENCE / FINANCIAL STATEMENT EXTRACTION"
+          name="Ledger"
+          trademark="TM"
+          subtitle="A standalone document intelligence API that turns unstructured bank statements into structured financial data with 14 bank templates and a 4-tier extraction cascade."
+          tags={[
+            "Python",
+            "FastAPI",
+            "Gemini AI",
+            "Terraform",
+            "AWS Lambda",
+            "React",
+          ]}
+          status="In production"
+          year="2025"
+        />
+
+        <div className={styles.sections}>
+          {/* ═══ 1. ORIGIN ═══ */}
+          <Section number="01" title="Why this exists">
+            <p>
+              Ledger started as a subdirectory inside YieldStream. The
+              underwriting platform needed structured financial data from
+              bank statements before it could score merchants against
+              lenders. I built the extraction pipeline inline, tightly
+              coupled to the monolith.
+            </p>
+            <p>
+              Two things forced the extraction. First, bank statement
+              parsing is not specific to MCA underwriting. Any fintech
+              product that touches bank data — lending, accounting,
+              bookkeeping, fraud detection — needs the same capability.
+              Second, parsing is bursty and CPU-heavy (OCR, image
+              processing, PDF manipulation), while the rest of YieldStream
+              is steady and database-heavy. Coupling them meant one
+              workload&apos;s spike could starve the other.
+            </p>
+            <p>
+              I extracted it into a standalone FastAPI service with its own
+              test suite, its own Docker image, and its own Terraform-managed
+              infrastructure on AWS Lambda. Ledger is now a product, not a
+              feature.
+            </p>
+          </Section>
+
+          {/* ═══ 2. THE ARCHITECTURE ═══ */}
+          <Section number="02" title="The architecture">
+            <p>
+              The core design principle:{" "}
+              <strong>
+                try the cheapest, fastest extraction first and escalate only
+                when confidence is too low.
+              </strong>{" "}
+              Every document passes through a quality gate, then enters a
+              4-tier extraction cascade. Each tier is independently timed
+              and logged. If a tier extracts fewer than 100 characters, the
+              orchestrator escalates to the next.
+            </p>
+
+            <ExtractionCascadeDiagram />
+
+            <p>
+              <strong>Tier 1: pdfplumber.</strong> Handles ~90% of
+              text-based PDFs in under 200ms. Extracts text with layout
+              awareness and pulls structured tables — critical for bank
+              statements where transaction data lives in columns, not
+              paragraphs.
+            </p>
+            <p>
+              <strong>Tier 2: PyMuPDF.</strong> Catches encrypted and
+              corrupted PDFs that pdfplumber can&apos;t open. Similar speed,
+              different PDF parsing engine.
+            </p>
+            <p>
+              <strong>Tier 3: Tesseract OCR.</strong> For scanned documents
+              and phone photos. 5-10 seconds per page. The quality gate
+              pre-screens for blur, skew, and contrast to avoid wasting OCR
+              compute on unsalvageable inputs.
+            </p>
+            <p>
+              <strong>Tier 4: LlamaParse.</strong> Cloud fallback with
+              30,000 free pages per month. Only reached when local
+              extraction fails entirely. Returns markdown output that the
+              downstream parser can still consume.
+            </p>
+
+            <CodeBlock
+              language="Python"
+              filename="orchestrator.py"
+              code={`def extract(file_path: str | Path) -> ExtractionResult:
+    """Try extractors in order until one produces sufficient text.
+
+    Cascade: pdfplumber -> PyMuPDF -> OCR -> LlamaParse
+    Each tier attempt is recorded for fallback analytics.
+    """
+    threshold = settings.min_text_threshold
+    result = ExtractionResult()
+
+    for tier_fn, tier_name, tier_order in TIERS:
+        attempt = TierAttempt(tier=tier_name, tier_order=tier_order)
+        start = time.time()
+        try:
+            text, pages = tier_fn(file_path)
+            attempt.text_char_count = len(text)
+            if len(text) >= threshold:
+                attempt.status = "success"
+                result.text = text
+                result.method = tier_name
+                break
+        except Exception as e:
+            attempt.failure_reason = str(e)
+        attempt.processing_time_ms = _elapsed_ms(start)
+        result.tier_attempts.append(attempt)`}
+            />
+          </Section>
+
+          {/* ═══ 3. TEMPLATE SYSTEM ═══ */}
+          <Section number="03" title="The template system">
+            <p>
+              Raw text extraction is step one. Step two is understanding
+              what that text means — and every bank formats statements
+              differently. Chase puts deposits under &quot;Deposits and
+              Additions.&quot; BofA calls them &quot;Credits.&quot; Wells Fargo uses a
+              transaction table with running balances. PNC splits
+              statements across multiple pages with no clear section
+              headers.
+            </p>
+            <p>
+              I built an abstract{" "}
+              <code className={styles.inlineCode}>BankTemplate</code> base
+              class with four methods:{" "}
+              <code className={styles.inlineCode}>matches()</code>{" "}
+              (confidence score 0-1 that the document belongs to this
+              bank),{" "}
+              <code className={styles.inlineCode}>extract_summary()</code>{" "}
+              (account holder, period dates, balances),{" "}
+              <code className={styles.inlineCode}>
+                extract_transactions()
+              </code>{" "}
+              (individual line items with categories), and{" "}
+              <code className={styles.inlineCode}>
+                compute_derived_metrics()
+              </code>{" "}
+              (ADB, negative balance days, largest transactions).
+            </p>
+            <p>
+              <strong>14 bank templates</strong> are registered today:
+              Chase, Bank of America, Wells Fargo, TD, PNC, US Bank,
+              Capital One, Regions, Truist, Citizens, Fifth Third, BMO
+              Harris, Navy Federal, and a generic fallback. Each
+              self-registers at import time via the template registry.
+            </p>
+            <p>
+              The registry runs all templates against incoming text and
+              picks the highest confidence match above 0.5. Below that
+              threshold, it falls back to the generic parser. Every match
+              is recorded in a <strong>30-day rolling history</strong>{" "}
+              (thread-safe, in-memory) for monitoring template coverage and
+              drift. The{" "}
+              <code className={styles.inlineCode}>/templates/bank</code>{" "}
+              endpoint exposes this data so I can see which banks are
+              hitting the generic fallback most often and prioritize new
+              templates accordingly.
+            </p>
+            <p>
+              Transaction categorization is deterministic. Credits are
+              classified as revenue by default, unless keyword patterns
+              match transfer signals (Zelle, Venmo, &quot;owner deposit&quot;) or MCA
+              payment patterns (ACH debits matching known lender names like
+              Yellowstone, Credibly, OnDeck). This distinction matters —
+              underwriters need to separate operating revenue from
+              transfers and existing debt payments.
+            </p>
+          </Section>
+
+          {/* ═══ 4. ENRICHMENT & VALIDATION ═══ */}
+          <Section number="04" title="Enrichment and validation">
+            <p>
+              Structured extraction gives you numbers. Enrichment gives you
+              signal. After parsing, Ledger optionally passes the extracted
+              data through Gemini 2.0 Flash to compute{" "}
+              <strong>25+ financial intelligence metrics</strong>:
+            </p>
+            <ul>
+              <li>
+                Monthly revenue average, trend (growing / stable /
+                declining), volatility, best and worst months
+              </li>
+              <li>
+                Average daily balance, lowest recorded balance, ending
+                balance trend
+              </li>
+              <li>NSF/overdraft counts across 30, 60, and 90-day windows</li>
+              <li>
+                Active MCA positions detected from recurring ACH debits,
+                stacking burden percentage, debt service coverage ratio
+              </li>
+              <li>
+                Lien flags (IRS, tax levy, garnishment keywords), transfer
+                anomalies, and a generated underwriting summary
+              </li>
+            </ul>
+            <p>
+              Gemini is rate-limited to 15 RPM via a token-bucket
+              implementation. If enrichment is disabled or rate-limited,
+              Ledger still returns the full structural extraction — AI is
+              additive, never blocking.
+            </p>
+
+            <div className={styles.callout}>
+              <p>
+                Every extraction includes an arithmetic validation step:
+                beginning balance + deposits - withdrawals should equal
+                ending balance. The check uses{" "}
+                <code className={styles.inlineCode}>Decimal</code>{" "}
+                precision with a $0.01 tolerance. A failed balance check
+                is a strong signal that either the OCR misread a number or
+                the template missed a transaction block.
+              </p>
+            </div>
+
+            <p>
+              Confidence scoring runs at every stage. Text quality
+              (characters per page), table extraction success, and template
+              match confidence are aggregated into an overall score. If it
+              drops below 0.85, the extraction is flagged{" "}
+              <code className={styles.inlineCode}>needs_human_review</code>{" "}
+              and queued for manual inspection via the review endpoint.
+            </p>
+          </Section>
+
+          {/* ═══ 5. INFRASTRUCTURE ═══ */}
+          <Section number="05" title="Infrastructure">
+            <p>
+              Ledger runs on <strong>AWS Lambda</strong> behind API Gateway
+              v2, deployed as a Docker container image. The entire
+              infrastructure is defined in Terraform — ECR repository, IAM
+              roles, Lambda function, API Gateway, and CloudWatch log
+              groups with 14-day retention. One{" "}
+              <code className={styles.inlineCode}>terraform apply</code>{" "}
+              stands up or tears down the whole stack.
+            </p>
+            <p>
+              Lambda was a deliberate choice over a persistent server.
+              Document parsing is bursty — high concurrency during business
+              hours, near-zero at night. Lambda scales to zero when idle
+              and handles burst concurrency without provisioning. The 512
+              MB memory allocation and 60-second timeout cover even the
+              slowest OCR extractions.
+            </p>
+            <p>
+              The service is stateless by design. No database, no file
+              system persistence. The review queue and template match
+              history live in-memory for the Lambda execution context. For
+              persistent storage, the calling service (YieldStream)
+              consumes the{" "}
+              <code className={styles.inlineCode}>ParseResponse</code> and
+              writes to its own database. This keeps Ledger operationally
+              simple — there&apos;s nothing to back up, nothing to migrate.
+            </p>
+            <p>
+              A React frontend (Vite + TypeScript) provides an interactive
+              testing interface: drag-and-drop upload, tabbed result views
+              (parsed data, raw text, tables, confidence breakdown, tier
+              logs), and a review queue for flagged extractions. It exists
+              for internal use and demos, not end-user-facing.
+            </p>
+          </Section>
+
+          {/* ═══ 6. RESULTS ═══ */}
+          <Section number="06" title="Where it stands">
+            <p>
+              Ledger processes bank statements from 14 banks with
+              template-specific accuracy, falls back gracefully for
+              unknown formats, and enriches every extraction with
+              25+ underwriting metrics. The test suite generates synthetic
+              PDFs via reportlab — no brittle binary fixtures — and covers
+              extraction, classification, bank parsing, enrichment, and
+              quality gate logic.
+            </p>
+            <p>
+              The architecture is designed to improve passively. Every
+              extraction against an unknown bank accumulates in the
+              template match history. When a bank hits 5+ extractions
+              without a dedicated template, the system surfaces it. Adding
+              a new template means writing one Python class that implements
+              four methods and registering it at import time. The registry
+              handles everything else.
+            </p>
+
+            <div className={styles.metricsRow}>
+              <MetricCard
+                value="14"
+                label="Bank templates"
+                sublabel="Self-registering at import"
+              />
+              <MetricCard
+                value="4"
+                label="Extraction tiers"
+                sublabel="Auto-escalation cascade"
+              />
+              <MetricCard
+                value="25+"
+                label="Financial metrics"
+                sublabel="Gemini AI enrichment"
+              />
+              <MetricCard
+                value="11"
+                label="Document types"
+                sublabel="Classified with confidence scoring"
+              />
+            </div>
+          </Section>
+        </div>
+
+        <CaseStudyFooter
+          stack={[
+            "Python 3.12",
+            "FastAPI",
+            "Pydantic v2",
+            "pdfplumber",
+            "Tesseract OCR",
+            "Gemini AI",
+            "AWS Lambda",
+            "Terraform",
+            "Docker",
+            "React 19",
+            "TypeScript",
+          ]}
+          links={[
+            { label: "YieldStream case study", href: "/work/yieldstream" },
             { label: "Back to portfolio", href: "/" },
           ]}
           updatedAt="April 2026"

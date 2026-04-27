@@ -1,0 +1,13 @@
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--zinc-500);
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--foreground);
+  }
+}

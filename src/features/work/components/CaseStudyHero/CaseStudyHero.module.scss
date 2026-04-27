@@ -1,0 +1,126 @@
+.hero {
+  position: relative;
+  padding-top: 2rem;
+  padding-bottom: 3.5rem;
+}
+
+.borderLine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #b2d5ff, #dfd1ff, transparent);
+  transform-origin: left;
+  animation: sweepIn 1.2s ease-out forwards, fadeOut 0.6s ease-in 2s forwards;
+}
+
+@keyframes sweepIn {
+  0% {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+  }
+}
+
+.category {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--zinc-500);
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+.name {
+  font-size: clamp(3.5rem, 10vw, 8rem);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 1.5rem;
+}
+
+.trademark {
+  margin-left: 0.1rem;
+  font-size: 0.5em;
+  font-weight: 500;
+  vertical-align: super;
+}
+
+.subtitle {
+  font-size: clamp(1.125rem, 2vw, 1.25rem);
+  line-height: 1.6;
+  color: var(--zinc-400);
+  max-width: 52ch;
+  margin-bottom: 2.5rem;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid rgba(63, 63, 70, 0.6);
+  border-radius: 9999px;
+  padding: 5px 11px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--zinc-400);
+}
+
+.details {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--zinc-400);
+}
+
+.statusDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-green);
+}
+
+.year {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--zinc-500);
+  letter-spacing: 0.05em;
+}

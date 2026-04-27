@@ -5,3 +5,4 @@ export { default as FooterBar } from "./FirstFold/FooterBar/FooterBar";
 export { default as SelectedWork } from "./SelectedWork/SelectedWork";
 export { default as Timezone } from "./Timezone/Timezone";
 export { default as About } from "./About/About";
+export { default as Contact } from "./Contact/Contact";

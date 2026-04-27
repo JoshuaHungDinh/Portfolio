@@ -20,8 +20,8 @@ export default function Contact() {
 
       <Reveal delay={0.2}>
         <p className={styles.subhead}>
-          Software Engineer open to interesting work across any industry.
-          Open to relocation &mdash; or remote, any timezone.
+          Software Engineer open to interesting work across any industry. Open
+          to relocation &mdash; or remote, any timezone.
         </p>
       </Reveal>
 
@@ -34,7 +34,7 @@ export default function Contact() {
             Email me <span className={styles.arrow}>&rarr;</span>
           </a>
           <a
-            href="https://cal.com/YOUR-HANDLE"
+            href="https://cal.com/joshua-hung-dinh"
             target="_blank"
             rel="noopener noreferrer"
             className={styles.actionLink}
@@ -54,7 +54,8 @@ export default function Contact() {
 
       <Reveal delay={0.4}>
         <p className={styles.footer}>
-          Based in San Diego &middot; Replies within 24 hours &middot; ありがとう
+          Based in San Diego &middot; Replies within 24 hours &middot;
+          ありがとう
         </p>
       </Reveal>
     </section>

@@ -1,16 +1,35 @@
-.fold {
-  display: flex;
+.revealContainer {
+  position: relative;
+}
+
+.spacer {
   height: 100vh;
+  height: 100dvh;
+}
+
+.fold {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  height: calc(100vh - var(--nav-height));
+  height: calc(100dvh - var(--nav-height));
+  display: flex;
   flex-direction: column;
   overflow: hidden;
-  position: sticky;
-  top: 0;
+  background: #09090b;
 }
 
 .bottom {
   margin-top: auto;
 }
 
-.scrollCatch {
-  height: 4rem;
+.revealBottom {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: #09090b;
 }

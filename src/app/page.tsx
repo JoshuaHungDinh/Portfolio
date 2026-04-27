@@ -5,15 +5,19 @@ export default function Home() {
   return (
     <main>
       <Navbar />
-      <div className={styles.fold}>
-        <Hero />
-        <div className={styles.bottom}>
-          <BigType />
-          <FooterBar />
+      <div className={styles.revealContainer}>
+        <div className={styles.fold}>
+          <Hero />
+          <div className={styles.bottom}>
+            <BigType />
+            <FooterBar />
+          </div>
         </div>
+        <div className={styles.revealBottom}>
+          <SelectedWork />
+        </div>
+        <div className={styles.spacer} />
       </div>
-      <div className={styles.scrollCatch} />
-      <SelectedWork />
     </main>
   );
 }

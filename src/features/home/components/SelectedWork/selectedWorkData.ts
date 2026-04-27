@@ -14,7 +14,7 @@ export interface Project {
 export const projects: Project[] = [
   {
     index: "01",
-    category: "CO-FOUNDER + LEAD ENGINEER / 2025—PRESENT",
+    category: "FOUNDER + LEAD ENGINEER / YIELDSTREAM LLC / 2025—PRESENT",
     name: "YieldStream",
     trademark: "TM",
     description:
@@ -29,7 +29,7 @@ export const projects: Project[] = [
     index: "02",
     category: "SOFTWARE ENGINEER / LIQUID WEB INC / 2022—2025",
     name: "GiveWP",
-    trademark: "R",
+    trademark: "",
     description:
       "The leading WordPress donation plugin, powering 100k+ nonprofits. Built and maintained fundraising forms, payment gateway integrations, and donor management features.",
     tags: ["WordPress", "PHP", "React", "Stripe"],
@@ -42,13 +42,13 @@ export const projects: Project[] = [
     index: "03",
     category: "DOCUMENT INTELLIGENCE / FINANCIAL STATEMENT EXTRACTION",
     name: "Ledger",
-    trademark: "",
+    trademark: "TM",
     description:
       "Production document intelligence service for bank statements and tax returns. Multi-tier parsing pipeline, 14 bank templates, 25+ risk indicators, balance reconciliation, and PII redaction — extracted from YieldStream's underwriting platform as a standalone API.",
     tags: [],
     visual: "image",
     imageSrc: "/ys-ledger-image.png",
-    label: "QUALIFY/API",
+    label: "LEDGER/API",
     href: "/work/yieldstream-qualify",
   },
   {

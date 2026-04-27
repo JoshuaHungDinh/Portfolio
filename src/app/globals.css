@@ -17,6 +17,7 @@
   --accent-green: #4ade80;
   --accent-gradient: linear-gradient(0deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.4) 100%),
     linear-gradient(rgb(178, 213, 255) 0%, rgb(223, 209, 255) 100%);
+  --nav-height: 4.5rem;
   --font-sans: var(--font-geist-sans), system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), monospace;
 }

@@ -25,7 +25,7 @@ export default function SelectedWork() {
   const sentinelRef = useRef<HTMLDivElement>(null);
   const projectsReady = useInView(sentinelRef, {
     once: true,
-    margin: "0px 0px -90% 0px",
+    margin: "0px 0px -40% 0px",
   });
 
   return (
@@ -61,8 +61,7 @@ export default function SelectedWork() {
         >
           Things I&apos;ve
           <br />
-          shipped
-          <span className={styles.greenDot} />
+          <span style={{ whiteSpace: "nowrap" }}>shipped<span className={styles.greenDot} /></span>
         </motion.h2>
         <motion.p
           className={styles.titleDescription}

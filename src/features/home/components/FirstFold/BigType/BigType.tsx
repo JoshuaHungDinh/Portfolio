@@ -41,7 +41,7 @@ export default function BigType() {
           animate="animate"
           transition={{ duration: 0.5, delay: 0.9, ease: "easeOut" }}
         >
-          ↓ View Resume
+          ↓ View Work
         </motion.a>
       </div>
     </section>

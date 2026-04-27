@@ -10,6 +10,7 @@ import {
   ScoringDiagram,
   PipelineDiagram,
   ExtractionCascadeDiagram,
+  FormBuilderDiagram,
 } from "@/features/work/components";
 import styles from "./page.module.scss";
 
@@ -23,6 +24,11 @@ const caseStudies: Record<string, { title: string; description: string }> = {
     title: "Ledger | Joshua Dinh",
     description:
       "Case study: a document intelligence microservice for financial statement extraction.",
+  },
+  givewp: {
+    title: "GiveWP | Joshua Dinh",
+    description:
+      "Case study: building the visual donation form builder and shipping two major releases for the leading WordPress donation plugin.",
   },
 };
 
@@ -50,6 +56,7 @@ export default async function CaseStudyPage({
 
   if (slug === "yieldstream") return <YieldStreamCaseStudy />;
   if (slug === "yieldstream-qualify") return <LedgerCaseStudy />;
+  if (slug === "givewp") return <GiveWPCaseStudy />;
 
   notFound();
 }
@@ -552,6 +559,436 @@ const MAX_REASONING = 3; // Gemini calls limited to top 3 lenders`}
 }
 
 /* ═════════════════════════════════════════════════��═════════
+   LEDGER CASE STUDY
+   ═══════════════════════════════════════════════════════════ */
+
+/* ═══════════════════════════════════════════════════════════
+   GIVEWP CASE STUDY
+   ═══════════════════════════════════════════════════════════ */
+
+function GiveWPCaseStudy() {
+  return (
+    <div className={styles.page}>
+      <nav className={styles.nav}>
+        <BackLink />
+      </nav>
+
+      <div className={styles.container}>
+        <CaseStudyHero
+          index="02"
+          category="SOFTWARE ENGINEER / STELLARWP (LIQUID WEB) / 2022—2025"
+          name="GiveWP"
+          trademark=""
+          subtitle="The leading WordPress donation plugin, powering 100,000+ nonprofits. I shipped frontend and full-stack features across two major releases — building the visual form builder, admin dashboard interfaces, and mailing addon integrations."
+          tags={[
+            "React 18",
+            "TypeScript",
+            "PHP",
+            "WordPress",
+            "Gutenberg",
+            "SCSS",
+          ]}
+          status="Open source"
+          year="2022—2025"
+        />
+
+        <div className={styles.sections}>
+          {/* ═══ 1. THE PRODUCT ═══ */}
+          <Section number="01" title="The product">
+            <p>
+              GiveWP is an open-source WordPress plugin that turns any
+              WordPress site into a fundraising platform. Donation forms,
+              recurring giving, donor management, payment gateway
+              integrations, email marketing — it&apos;s a full-stack
+              fundraising toolkit that competes with platforms like Donorbox
+              and Classy, but runs entirely within WordPress.
+            </p>
+            <p>
+              At the time I joined, GiveWP had{" "}
+              <strong>100,000+ active installations</strong> and was the
+              most-used donation plugin on WordPress.org. The codebase had
+              been in production since 2015 — a mature PHP monolith with
+              jQuery-driven admin interfaces and a legacy form editor built
+              on WordPress meta boxes.
+            </p>
+            <p>
+              I was hired as a frontend engineer on the core team at
+              StellarWP (a division of Liquid Web). Over three years and{" "}
+              <strong>253 pull requests</strong>, I worked across the
+              full stack — React frontends, PHP service providers, REST API
+              endpoints, and addon integrations — shipping features in both
+              the <strong>3.0</strong> and <strong>4.0</strong> major
+              releases.
+            </p>
+          </Section>
+
+          {/* ═══ 2. THE FORM BUILDER ═══ */}
+          <Section number="02" title="The visual form builder">
+            <p>
+              The 3.0 release was the biggest rewrite in GiveWP&apos;s
+              history — <strong>664,253 lines of code changed</strong>. The
+              centerpiece was a completely new visual donation form builder
+              that replaced the legacy meta-box editor with a modern
+              block-based experience built on the WordPress Gutenberg
+              infrastructure.
+            </p>
+            <p>
+              The form builder is a React 18 / TypeScript application that
+              runs inside the WordPress admin. It uses{" "}
+              <code className={styles.inlineCode}>@wordpress/block-editor</code>,{" "}
+              <code className={styles.inlineCode}>@wordpress/data</code>, and{" "}
+              <code className={styles.inlineCode}>react-beautiful-dnd</code>{" "}
+              for a drag-and-drop editing experience. State management runs
+              through a React Context provider stack —{" "}
+              <code className={styles.inlineCode}>EditorStateProvider</code>,{" "}
+              <code className={styles.inlineCode}>FormStateProvider</code>,
+              and{" "}
+              <code className={styles.inlineCode}>ShortcutProvider</code>{" "}
+              — using <code className={styles.inlineCode}>useReducer</code>{" "}
+              with discrete actions for form settings, block state, and
+              dirty tracking.
+            </p>
+            <p>
+              The builder renders an iframe preview of the live donation
+              form with responsive viewport modes. Blocks span five
+              categories — input fields, content, layout, custom fields, and
+              addon blocks — each registered through WordPress&apos;s block
+              API and backed by a PHP{" "}
+              <code className={styles.inlineCode}>BlockModel</code> on the
+              server.
+            </p>
+
+            <FormBuilderDiagram />
+
+            <div className={styles.subsection}>
+              <p className={styles.subsectionLabel}>My contributions</p>
+              <p>
+                I built responsive preview modes that replaced the fixed
+                sidebar positioning with a width-responsive preview
+                container. I worked on the block insertion point indicator,
+                modal rendering across iframe contexts, the email template
+                settings panel, header image controls with overlay
+                configuration, and the onboarding tour flow for new users.
+              </p>
+              <p>
+                I also built the Terms and Conditions block, the anonymous
+                donation block with its placeholder UI/UX, and the Donation
+                Form Block v3 that supported both reveal and modal display
+                modes on the frontend. In the shared{" "}
+                <code className={styles.inlineCode}>form-builder-library</code>{" "}
+                package, I contributed the BlockNotice component,
+                OptionsPanel enhancements, and currency control refactors.
+              </p>
+            </div>
+
+            <div className={styles.subsection}>
+              <p className={styles.subsectionLabel}>
+                Donation amount level descriptions
+              </p>
+              <p>
+                One of the larger features I owned end-to-end was donation
+                amount level descriptions — allowing fundraisers to add
+                contextual labels to each giving level (e.g., &quot;$25 —
+                feeds a family for a week&quot;). This touched 33 files
+                across the form builder UI, the migration pipeline, and the
+                frontend templates. It required building the settings UI in
+                the form builder, writing the v2-to-v3 migration step to
+                carry over existing level data, and updating the rendering
+                templates to display descriptions across all form designs.
+              </p>
+            </div>
+          </Section>
+
+          {/* ═══ 3. ADMIN DASHBOARD ═══ */}
+          <Section number="03" title="Admin dashboard interfaces">
+            <p>
+              GiveWP&apos;s admin dashboard follows a PHP service provider
+              + React frontend pattern. Each entity — donations, donors,
+              subscriptions, campaigns — has its own{" "}
+              <code className={styles.inlineCode}>ListTable</code>{" "}
+              component backed by PHP endpoint classes and consumed by
+              React frontends using{" "}
+              <code className={styles.inlineCode}>swr</code> for data
+              fetching and Chart.js for visualizations.
+            </p>
+            <p>
+              I built the empty state designs for the donation, donor, and
+              subscription tables — giving new users a clear onboarding
+              path instead of a blank screen. I drove consistency work
+              across list table pages, standardizing spacing, typography,
+              and interactive patterns.
+            </p>
+            <p>
+              A more substantial piece was adding{" "}
+              <strong>stat tiles to the Donor List Table</strong>. This
+              required building a new REST API endpoint at{" "}
+              <code className={styles.inlineCode}>
+                give-api/v2/admin/donors/stats
+              </code>{" "}
+              on the PHP side and rendering the stat tiles in React on the
+              frontend. I followed the same pattern to add subscription
+              stats and donor sorting by total amount given.
+            </p>
+            <p>
+              Later, I refactored the Donor Overview page into modular
+              container components — extracting tightly coupled rendering
+              logic into composable pieces. That single PR touched 645 lines
+              and set the pattern the team followed for subsequent admin
+              page architectures.
+            </p>
+          </Section>
+
+          {/* ═══ 4. MAILING ADDON MIGRATIONS ═══ */}
+          <Section number="04" title="Mailing addon integrations">
+            <p>
+              GiveWP&apos;s mailing addons — Mailchimp, Constant Contact,
+              ActiveCampaign, ConvertKit — are separate plugins that
+              register Gutenberg blocks into the form builder. When a donor
+              submits a form, the block attributes determine which mailing
+              list they&apos;re subscribed to, whether double opt-in is
+              required, and what tags are applied.
+            </p>
+            <p>
+              The 3.0 release introduced a completely new block-based form
+              architecture. Every existing v2 form needed a migration path
+              to the new system — including addon configurations. I
+              spearheaded the migration pipeline for all four mailing
+              addons, writing the PHP migration steps that read legacy form
+              meta and created the corresponding v3 blocks with the correct
+              attributes.
+            </p>
+
+            <CodeBlock
+              language="PHP"
+              filename="Steps/Mailchimp.php"
+              code={`class Mailchimp extends FormMigrationStep
+{
+    public function process(FormMigrationPayload $payload): void
+    {
+        $meta = $payload->formMeta;
+
+        $attributes = [
+            'label'          => $meta->getMailchimpLabel(),
+            'checked'        => $meta->isMailchimpDefaultChecked(),
+            'doubleOptIn'    => $meta->isMailchimpDoubleOptIn(),
+            'subscriberTags' => $meta->getMailchimpTags(),
+            'selectedAudience' => $meta->getMailchimpAudience(),
+            'sendFFMData'    => $meta->shouldSendFFMDataToMailchimp(),
+        ];
+
+        $payload->formBlocks->insertAfter(
+            'givewp/email',
+            BlockModel::make('givewp/mailchimp', $attributes)
+        );
+    }
+}`}
+            />
+
+            <p>
+              Each migration step followed the same contract:{" "}
+              read the legacy meta through a{" "}
+              <code className={styles.inlineCode}>FormMetaDecorator</code>,
+              build the block attributes, and insert the block at the
+              correct position in the form layout. I wrote corresponding
+              PRs in the private addon repos to register the new blocks and
+              handle the runtime subscription logic.
+            </p>
+            <p>
+              The migration had to be non-destructive — v2 forms stayed
+              functional while v3 forms ran alongside them. Donors
+              never saw a broken subscription flow during the transition.
+            </p>
+          </Section>
+
+          {/* ═══ 5. THE HARD PARTS ═══ */}
+          <Section number="05" title="The hard parts">
+            <div className={styles.warStory}>
+              <p className={styles.warStoryTitle}>
+                <svg className={styles.warStoryIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                  <line x1="8" y1="21" x2="16" y2="21" />
+                  <line x1="12" y1="17" x2="12" y2="21" />
+                </svg>
+                Modal rendering across iframes
+              </p>
+              <div className={styles.warStoryBody}>
+                <p>
+                  The form builder renders the donation form inside an
+                  iframe for accurate preview. But modals — the
+                  StyledPopover, confirmation dialogs, and block
+                  settings panels — needed to render in the parent
+                  document, not the iframe. The iframe context created a
+                  mismatch between the DOM tree the modal targeted and
+                  the one the user interacted with. I fixed this by
+                  ensuring portal targets were correctly resolved based
+                  on the rendering context and that event propagation
+                  worked across the iframe boundary.
+                </p>
+              </div>
+            </div>
+
+            <div className={styles.warStory}>
+              <p className={styles.warStoryTitle}>
+                <svg className={styles.warStoryIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
+                Migrating four mailing addons without breaking subscriptions
+              </p>
+              <div className={styles.warStoryBody}>
+                <p>
+                  Each mailing addon stored configuration differently in
+                  v2 — some in per-form meta, some in global settings,
+                  some in both. Mailchimp had subscriber tags, audience
+                  selection, and a double opt-in flag. Constant Contact
+                  had email list selection. ActiveCampaign had its own
+                  meta structure. The migration steps needed to read
+                  these heterogeneous formats, normalize them, and
+                  produce consistent v3 block attributes.
+                </p>
+                <p>
+                  The{" "}
+                  <code className={styles.inlineCode}>FormMetaDecorator</code>{" "}
+                  pattern abstracted the per-addon meta access, letting
+                  each migration step focus on attribute mapping rather
+                  than meta-key archaeology. I wrote unit tests for each
+                  addon&apos;s migration to verify that legacy
+                  configurations round-tripped correctly into the new
+                  block format.
+                </p>
+              </div>
+            </div>
+
+            <div className={styles.warStory}>
+              <p className={styles.warStoryTitle}>
+                <svg className={styles.warStoryIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4-4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                  <path d="M23 21v-2a4 4 0 00-3-3.87" />
+                  <path d="M16 3.13a4 4 0 010 7.75" />
+                </svg>
+                Shipping 3.0 on a team
+              </p>
+              <div className={styles.warStoryBody}>
+                <p>
+                  This was my first major release cycle on an
+                  open-source product used by over 100,000 sites. The
+                  3.0 release started as a separate feature plugin
+                  (givewp-next-gen) that was developed in parallel, then
+                  merged into core. Coordinating between the feature
+                  branch and main, managing addon compatibility, and
+                  ensuring v2 forms remained functional throughout the
+                  transition required a level of release discipline that
+                  solo projects don&apos;t. I shipped 16 PRs in the 3.0.0
+                  release alone — form builder features, onboarding
+                  flows, design polish, and bug fixes across the final
+                  push.
+                </p>
+              </div>
+            </div>
+          </Section>
+
+          {/* ═══ 6. CAMPAIGNS (4.0) ═══ */}
+          <Section number="06" title="Campaigns — the 4.0 release">
+            <p>
+              The 4.0 release introduced campaign-based fundraising —
+              organizing multiple donation forms under a single campaign
+              with a shared goal, landing page, and performance analytics.
+              This was a significant data model change: a one-to-many
+              relationship between campaigns and forms, with new admin
+              pages, WordPress blocks, and REST endpoints.
+            </p>
+            <p>
+              I built the <strong>Campaign Cover Block</strong> and{" "}
+              <strong>Campaign Stats Block</strong> — two of the core
+              WordPress blocks that render campaign data on the frontend.
+              I designed the campaign overview page styling and structure,
+              updated confirmation modals across list tables, and built
+              the campaign welcome banner and intro modal for existing
+              users.
+            </p>
+            <p>
+              On the dashboard side, I added campaign list table styling,
+              shortcode support for embedding campaigns, the default form
+              indicator, and the draft campaign page notice. I also
+              replaced the donations table form filter with campaigns to
+              reflect the new data hierarchy.
+            </p>
+          </Section>
+
+          {/* ═══ 7. WHAT I SHIPPED ═══ */}
+          <Section number="07" title="What I shipped">
+            <p>
+              Over three years at StellarWP, I contributed across 6
+              repositories — the core plugin, the next-gen feature plugin,
+              the form-builder-library, addon repos, and the design system.
+              My work spanned both major releases and the ongoing
+              maintenance between them.
+            </p>
+            <p>
+              In the final year, I led accessibility improvements across
+              the admin interface — adding ARIA labels, keyboard focus
+              management, color contrast fixes, semantic HTML, and
+              proper heading hierarchy. Working on a product used by
+              nonprofits reinforced that accessibility isn&apos;t a
+              nice-to-have — it&apos;s a requirement.
+            </p>
+
+            <div className={styles.metricsRow}>
+              <MetricCard
+                value="253"
+                label="Pull requests"
+                sublabel="Across 6 repositories"
+              />
+              <MetricCard
+                value="2"
+                label="Major releases"
+                sublabel="3.0 (form builder) + 4.0 (campaigns)"
+              />
+              <MetricCard
+                value="4"
+                label="Addon migrations"
+                sublabel="Mailchimp, CC, AC, ConvertKit"
+              />
+              <MetricCard
+                value="3.5yr"
+                label="Tenure"
+                sublabel="2022—2025"
+              />
+            </div>
+          </Section>
+        </div>
+
+        <CaseStudyFooter
+          stack={[
+            "React 18",
+            "TypeScript",
+            "PHP",
+            "WordPress",
+            "Gutenberg",
+            "@wordpress/data",
+            "react-beautiful-dnd",
+            "react-hook-form",
+            "SWR",
+            "Chart.js",
+            "SCSS",
+            "wp-scripts",
+          ]}
+          links={[
+            {
+              label: "GiveWP on GitHub",
+              href: "https://github.com/impress-org/givewp",
+            },
+            { label: "Back to portfolio", href: "/" },
+          ]}
+          updatedAt="April 2026"
+        />
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════
    LEDGER CASE STUDY
    ═══════════════════════════════════════════════════════════ */
 

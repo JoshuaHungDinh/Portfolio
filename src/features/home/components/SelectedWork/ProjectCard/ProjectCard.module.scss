@@ -14,15 +14,21 @@
 }
 
 /* ── Default (ODD): text cols 1-5, image cols 7-12 ── */
-.textBlock {
+.textCol {
   grid-column: 1 / 6;
+}
+
+.imageCol {
+  grid-column: 7 / 13;
+}
+
+.textBlock {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
 
 .imageBlock {
-  grid-column: 7 / 13;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -34,13 +40,16 @@
 }
 
 /* ── EVEN (reversed): image cols 1-6, text cols 8-12 ── */
-.reversed .imageBlock {
+.reversed .imageCol {
   grid-column: 1 / 7;
   order: -1;
 }
 
-.reversed .textBlock {
+.reversed .textCol {
   grid-column: 8 / 13;
+}
+
+.reversed .textBlock {
   align-items: flex-end;
   text-align: right;
 }
@@ -139,18 +148,31 @@
     padding-top: 48px;
   }
 
-  .textBlock,
-  .imageBlock,
-  .reversed .textBlock,
-  .reversed .imageBlock {
+  .textCol,
+  .imageCol,
+  .reversed .textCol,
+  .reversed .imageCol {
     grid-column: 1 / -1;
   }
 
-  .imageBlock {
+  .imageCol {
     order: -1;
   }
 
-  .textBlock {
+  .textCol {
     margin-top: 24px;
   }
+}
+
+/* ── Scroll-reveal transitions ── */
+.hidden {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }

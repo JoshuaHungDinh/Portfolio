@@ -14,7 +14,7 @@ export interface Project {
 export const projects: Project[] = [
   {
     index: "01",
-    category: "FOUNDER + LEAD ENGINEER / YIELDSTREAM LLC / 2025—PRESENT",
+    category: "SOFTWARE ENGINEER / YIELDSTREAM / 2025",
     name: "YieldStream",
     trademark: "TM",
     description:
@@ -53,11 +53,11 @@ export const projects: Project[] = [
   },
   {
     index: "04",
-    category: "FULL-STACK / TYPESCRIPT + PYTHON",
+    category: "EMBEDDABLE AI CHAT / MULTI-TENANT SAAS WIDGET",
     name: "BubbleChat",
     trademark: "",
     description:
-      "Embeddable AI chat widget powered by Gemini with an admin dashboard for managing conversations, JWT auth, and async database operations.",
+      "Embeddable AI chat with a multi-tenant FastAPI backend. Vanilla TypeScript web component (shadow DOM, zero dependencies), async SQLite/Postgres, streaming responses via SSE, and a React admin dashboard with live preview for prompts and styling.",
     tags: [],
     visual: "image",
     imageSrc: "/bubble-chat-image.png",

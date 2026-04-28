@@ -33,7 +33,7 @@ const caseStudies: Record<string, { title: string; description: string }> = {
   "bubble-chat": {
     title: "BubbleChat | Joshua Dinh",
     description:
-      "Case study: an embeddable AI chat widget with multi-tenant SaaS backend, admin dashboard, and serverless deployment.",
+      "Embeddable AI chat with a multi-tenant FastAPI backend. Vanilla TypeScript web component (shadow DOM, zero dependencies), async SQLite/Postgres, streaming responses via SSE, and a React admin dashboard with live preview for prompts and styling.",
   },
 };
 
@@ -81,7 +81,7 @@ function YieldStreamCaseStudy() {
       <div className={styles.container}>
         <CaseStudyHero
           index="01"
-          category="FOUNDER + LEAD ENGINEER / YIELDSTREAM LLC / 2025—PRESENT"
+          category="SOFTWARE ENGINEER / YIELDSTREAM / 2025"
           name="YieldStream"
           trademark="TM"
           subtitle="An underwriting intelligence platform that replaces gut-feel lender routing with a three-layer scoring model, document parsing, and outcome-based learning."
@@ -1361,7 +1361,7 @@ function BubbleChatCaseStudy() {
       <div className={styles.container}>
         <CaseStudyHero
           index="04"
-          category="FULL-STACK / TYPESCRIPT + PYTHON"
+          category="EMBEDDABLE AI CHAT / MULTI-TENANT SAAS WIDGET"
           name="BubbleChat"
           trademark=""
           subtitle="A multi-tenant embeddable AI chat widget with a FastAPI backend, React admin dashboard, and serverless deployment. Each client gets their own widget instance, system prompt, styling tokens, and API keys — managed through a three-panel admin interface."

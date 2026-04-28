@@ -1,6 +1,12 @@
 import styles from "./Navbar.module.scss";
 
-const socialLinks = [
+const socialLinks: {
+  label: string;
+  tooltip: string;
+  href: string;
+  icon: React.ReactNode;
+  download?: string;
+}[] = [
   {
     label: "LinkedIn",
     tooltip: "linkedin.com/in/joshuahungdinh",
@@ -42,6 +48,21 @@ const socialLinks = [
       </svg>
     ),
   },
+  {
+    label: "Download résumé",
+    tooltip: "Download résumé",
+    href: "/Joshua_Dinh_Resume.pdf",
+    download: "Joshua_Dinh_Resume.pdf",
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M15 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V7z" />
+        <polyline points="14 2 14 8 20 8" />
+        <line x1="16" y1="13" x2="8" y2="13" />
+        <line x1="16" y1="17" x2="8" y2="17" />
+        <polyline points="10 9 9 9 8 9" />
+      </svg>
+    ),
+  },
 ];
 
 export default function Navbar() {
@@ -69,8 +90,9 @@ export default function Navbar() {
               href={link.href}
               className={styles.socialLink}
               aria-label={link.label}
-              target="_blank"
-              rel="noopener noreferrer"
+              {...(link.download
+                ? { download: link.download }
+                : { target: "_blank", rel: "noopener noreferrer" })}
             >
               {link.icon}
             </a>

@@ -49,6 +49,14 @@ export default function Contact() {
           >
             LinkedIn <span className={styles.arrow}>&#x2197;</span>
           </a>
+          <a
+            href="/Joshua_Dinh_Resume.pdf"
+            download="Joshua_Dinh_Resume.pdf"
+            aria-label="Download résumé"
+            className={styles.actionLink}
+          >
+            Resume <span className={styles.arrow}>&darr;</span>
+          </a>
         </div>
       </Reveal>
 

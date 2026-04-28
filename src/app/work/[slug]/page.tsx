@@ -30,6 +30,11 @@ const caseStudies: Record<string, { title: string; description: string }> = {
     description:
       "Case study: building the visual donation form builder and shipping two major releases for the leading WordPress donation plugin.",
   },
+  "bubble-chat": {
+    title: "BubbleChat | Joshua Dinh",
+    description:
+      "Case study: an embeddable AI chat widget with multi-tenant SaaS backend, admin dashboard, and serverless deployment.",
+  },
 };
 
 export function generateStaticParams() {
@@ -57,6 +62,7 @@ export default async function CaseStudyPage({
   if (slug === "yieldstream") return <YieldStreamCaseStudy />;
   if (slug === "yieldstream-qualify") return <LedgerCaseStudy />;
   if (slug === "givewp") return <GiveWPCaseStudy />;
+  if (slug === "bubble-chat") return <BubbleChatCaseStudy />;
 
   notFound();
 }
@@ -1334,6 +1340,308 @@ function LedgerCaseStudy() {
             { label: "YieldStream case study", href: "/work/yieldstream" },
             { label: "Back to portfolio", href: "/" },
           ]}
+          updatedAt="April 2026"
+        />
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BUBBLECHAT CASE STUDY
+   ═══════════════════════════════════════════════════════════ */
+
+function BubbleChatCaseStudy() {
+  return (
+    <div className={styles.page}>
+      <nav className={styles.nav}>
+        <BackLink />
+      </nav>
+
+      <div className={styles.container}>
+        <CaseStudyHero
+          index="04"
+          category="FULL-STACK / TYPESCRIPT + PYTHON"
+          name="BubbleChat"
+          trademark=""
+          subtitle="A multi-tenant embeddable AI chat widget with a FastAPI backend, React admin dashboard, and serverless deployment. Each client gets their own widget instance, system prompt, styling tokens, and API keys — managed through a three-panel admin interface."
+          tags={[
+            "FastAPI",
+            "React 19",
+            "TypeScript",
+            "Python",
+            "Gemini AI",
+            "Docker",
+          ]}
+          status="Side project"
+          year="2025"
+        />
+
+        <div className={styles.sections}>
+          {/* ═══ 1. THE IDEA ═══ */}
+          <Section number="01" title="The idea">
+            <p>
+              Most embeddable chat widgets are either configuration-less
+              drop-ins with no backend control, or enterprise platforms with
+              six-figure contracts. I wanted to build the middle ground: a
+              lightweight widget that any site owner could embed with a single
+              script tag, backed by a full multi-tenant platform for managing
+              clients, conversations, and AI behavior.
+            </p>
+            <p>
+              The system is designed as a <strong>SaaS platform</strong>, not a
+              single-use widget. Each client (organization) gets their own
+              configured instance: a unique slug, API keys with per-key rate
+              limits, a custom system prompt that controls the bot&apos;s
+              personality, allowed CORS origins, and a full design token system
+              for styling the widget to match their brand. Conversations are
+              isolated per client. The admin dashboard manages everything
+              through a three-panel interface — client list, configuration
+              editor, and live widget preview.
+            </p>
+          </Section>
+
+          {/* ═══ 2. THE ARCHITECTURE ═══ */}
+          <Section number="02" title="The architecture">
+            <p>
+              The system is three services working in concert:{" "}
+              <strong>a Web Component widget</strong> compiled to a standalone
+              JS bundle via esbuild,{" "}
+              <strong>a FastAPI backend</strong> serving the chat API and admin
+              endpoints, and{" "}
+              <strong>a React dashboard</strong> for client management. Each
+              service is independently deployable — the widget ships as a
+              CDN-hosted script, the backend runs on AWS Lambda via Mangum, and
+              the dashboard is a static Vite build.
+            </p>
+
+            <div className={styles.subsection}>
+              <p className={styles.subsectionLabel}>A. Dual authentication</p>
+              <p>
+                Two different audiences need two different auth mechanisms. The
+                widget authenticates via{" "}
+                <strong>API key</strong> — sent as an{" "}
+                <code className={styles.inlineCode}>X-API-Key</code> header on
+                every request, SHA-256 hashed server-side for lookup. I chose
+                SHA-256 over bcrypt deliberately: bcrypt is intentionally slow
+                (good for login protection), but per-request widget auth needs
+                sub-millisecond verification. The dashboard uses{" "}
+                <strong>JWT</strong> — bcrypt-hashed password at login, then
+                HS256-signed tokens with 1-hour expiry for subsequent requests.
+              </p>
+            </div>
+
+            <div className={styles.subsection}>
+              <p className={styles.subsectionLabel}>B. Streaming</p>
+              <p>
+                Chat responses stream token-by-token via Server-Sent Events.
+                The backend receives a message, loads the conversation history
+                (capped at 50 messages), and streams the Gemini response
+                through an async generator that emits SSE events. Each event is
+                typed:{" "}
+                <code className={styles.inlineCode}>token</code>,{" "}
+                <code className={styles.inlineCode}>done</code>, or{" "}
+                <code className={styles.inlineCode}>error</code>. The assistant
+                message is persisted to the database only after the stream
+                completes.
+              </p>
+            </div>
+
+            <CodeBlock
+              language="Python"
+              filename="chat.py"
+              code={`async def stream_chat(message: str, session_id: str, client: Client, db: AsyncSession):
+    """Stream AI response token-by-token via SSE."""
+    conversation = await get_or_create_conversation(db, client.id, session_id)
+    await save_message(db, conversation.id, "user", message)
+
+    history = await get_history(db, conversation.id, limit=MAX_HISTORY)
+    system_prompt = client.system_prompt  # never sent to frontend
+
+    async def event_generator():
+        full_response = ""
+        async for chunk in gemini.stream_response(history, system_prompt):
+            full_response += chunk
+            yield f"event: token\\ndata: {json.dumps({'content': chunk})}\\n\\n"
+        await save_message(db, conversation.id, "assistant", full_response)
+        yield f"event: done\\ndata: {json.dumps({'status': 'complete'})}\\n\\n"
+
+    return StreamingResponse(event_generator(), media_type="text/event-stream")`}
+            />
+
+            <div className={styles.subsection}>
+              <p className={styles.subsectionLabel}>C. Async-native</p>
+              <p>
+                The backend is async throughout — not as an afterthought, but
+                as an architectural constraint. SQLAlchemy async sessions with{" "}
+                <code className={styles.inlineCode}>async_sessionmaker</code>,
+                async generators for SSE streaming, and FastAPI&apos;s
+                dependency injection for auth and database access. The Gemini
+                client initializes lazily so the app starts without an API key
+                in dev. Rate limiting uses a sliding window algorithm tracking
+                per-key request timestamps, with an abstraction layer that
+                swaps between in-memory (single instance) and Redis
+                (distributed) backends.
+              </p>
+            </div>
+          </Section>
+
+          {/* ═══ 3. THE WIDGET ═══ */}
+          <Section number="03" title="The widget">
+            <p>
+              The widget is a{" "}
+              <code className={styles.inlineCode}>&lt;chat-widget&gt;</code>{" "}
+              custom HTML element that attaches a Shadow DOM root. Shadow DOM
+              was non-negotiable — the widget embeds on third-party sites where
+              host CSS could break the layout and widget styles could pollute
+              the host page. The Shadow DOM boundary provides complete
+              isolation. Styling is driven by CSS variables injected from the
+              server&apos;s design token system.
+            </p>
+            <p>
+              The <strong>design token system</strong> is a structured Pydantic
+              model with five token groups: brand (primary and secondary
+              colors), typography (font family, sizes, weights), shape (border
+              radius, width), layout (position, dimensions), and motion
+              (animation style and speed). The admin dashboard edits these
+              tokens through a visual interface with a live preview panel. On
+              the widget side, tokens are converted to CSS custom properties
+              and injected into the Shadow DOM at initialization.
+            </p>
+            <p>
+              Conversations are scoped per browser tab. A UUID is generated
+              and stored in{" "}
+              <code className={styles.inlineCode}>sessionStorage</code> — not{" "}
+              <code className={styles.inlineCode}>localStorage</code> — so
+              each tab gets its own conversation thread. Closing the tab
+              discards the session. This was a deliberate UX choice: returning
+              visitors start fresh rather than resuming a potentially stale
+              conversation from days ago.
+            </p>
+            <p>
+              The system prompt is{" "}
+              <strong>injected server-side only</strong>. It never appears in
+              any client-facing response or configuration payload. This
+              prevents prompt extraction attacks — a visitor can&apos;t inspect
+              network traffic or DOM state to discover the bot&apos;s
+              instructions.
+            </p>
+          </Section>
+
+          {/* ═══ 4. THE HARD PARTS ═══ */}
+          <Section number="04" title="The hard parts">
+            <div className={styles.warStory}>
+              <p className={styles.warStoryTitle}>
+                <svg className={styles.warStoryIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                </svg>
+                Streaming SSE over POST
+              </p>
+              <div className={styles.warStoryBody}>
+                <p>
+                  The browser&apos;s{" "}
+                  <code className={styles.inlineCode}>EventSource</code> API
+                  only supports GET requests. Chat messages need to be sent as
+                  POST with a JSON body — you can&apos;t stuff a conversation
+                  payload into query parameters. I had to build a manual SSE
+                  parser in the widget that uses{" "}
+                  <code className={styles.inlineCode}>fetch()</code> with a
+                  readable stream, splits the incoming bytes on double
+                  newlines, parses event types and data fields, and
+                  dispatches tokens to the DOM for the typing effect. Error
+                  handling had to account for partial chunks, network
+                  interruptions mid-stream, and the backend&apos;s error
+                  events.
+                </p>
+              </div>
+            </div>
+
+            <div className={styles.warStory}>
+              <p className={styles.warStoryTitle}>
+                <svg className={styles.warStoryIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                  <line x1="3" y1="9" x2="21" y2="9" />
+                  <line x1="9" y1="21" x2="9" y2="9" />
+                </svg>
+                Widget CSS isolation
+              </p>
+              <div className={styles.warStoryBody}>
+                <p>
+                  Shadow DOM solved the isolation problem, but introduced a new
+                  one: the design token system needed to inject styles{" "}
+                  <em>into</em> the shadow root without breaking the boundary.
+                  Global stylesheets don&apos;t penetrate Shadow DOM. I built a
+                  CSS generation layer that converts the Pydantic token model
+                  into a complete stylesheet string, injects it as a{" "}
+                  <code className={styles.inlineCode}>&lt;style&gt;</code>{" "}
+                  element inside the shadow root, and re-renders when the
+                  admin updates tokens in real time. The live preview in the
+                  dashboard renders the actual widget component — not a
+                  mockup — so what the admin sees is exactly what deploys.
+                </p>
+              </div>
+            </div>
+          </Section>
+
+          {/* ═══ 5. WHERE IT STANDS ═══ */}
+          <Section number="05" title="Where it stands">
+            <p>
+              BubbleChat is a working side project that covers the full stack:
+              a compiled Web Component, an async Python API, a React admin
+              interface, and container-based deployment to AWS Lambda. The
+              database layer supports both SQLite (dev) and PostgreSQL
+              (production) through a single connection URL swap, with Alembic
+              managing schema migrations.
+            </p>
+            <p>
+              The project was built to demonstrate end-to-end product
+              engineering — not just a frontend or just an API, but a complete
+              multi-tenant platform with auth, rate limiting, real-time
+              streaming, and infrastructure-as-code. Every service is
+              containerized, the backend is tested with pytest and async
+              fixtures, and the deployment is defined in an AWS SAM template.
+            </p>
+
+            <div className={styles.metricsRow}>
+              <MetricCard
+                value="3"
+                label="Services"
+                sublabel="Widget, API, Dashboard"
+              />
+              <MetricCard
+                value="10"
+                label="API endpoints"
+                sublabel="CRUD, auth, chat, config"
+              />
+              <MetricCard
+                value="2"
+                label="Auth mechanisms"
+                sublabel="API key + JWT"
+              />
+              <MetricCard
+                value="5"
+                label="Token groups"
+                sublabel="Brand, type, shape, layout, motion"
+              />
+            </div>
+          </Section>
+        </div>
+
+        <CaseStudyFooter
+          stack={[
+            "Python",
+            "FastAPI",
+            "SQLAlchemy",
+            "Pydantic v2",
+            "React 19",
+            "TypeScript",
+            "Vite",
+            "esbuild",
+            "Docker",
+            "AWS SAM",
+            "Gemini AI",
+          ]}
+          links={[{ label: "Back to portfolio", href: "/" }]}
           updatedAt="April 2026"
         />
       </div>

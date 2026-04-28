@@ -54,13 +54,14 @@ export const projects: Project[] = [
   {
     index: "04",
     category: "FULL-STACK / TYPESCRIPT + PYTHON",
-    name: "Chat Widget",
+    name: "BubbleChat",
     trademark: "",
     description:
       "Embeddable AI chat widget powered by Gemini with an admin dashboard for managing conversations, JWT auth, and async database operations.",
     tags: [],
-    visual: "chat",
-    label: "CHAT/WIDGET",
-    href: "/work/chat-widget",
+    visual: "image",
+    imageSrc: "/bubble-chat-image.png",
+    label: "BUBBLECHAT/WIDGET",
+    href: "/work/bubble-chat",
   },
 ];

@@ -12,7 +12,7 @@ export default function Hero() {
             Building Systems that Ship Fast
           </span>
           <span className={styles.headingLine} style={{ animationDelay: "0.65s" }}>
-            and Scale 静かに.
+            and Scale 着実に.
           </span>
         </h1>
         <p className={styles.subtitle} style={{ animationDelay: "0.8s" }}>

@@ -120,6 +120,14 @@
   background: rgba(255, 255, 255, 0.05);
 }
 
+/* ── Hover: desaturate un-hovered project cards ── */
+@media (pointer: fine) {
+  .section:has([data-project-row]:hover) [data-project-row]:not(:hover) img,
+  .section:has([data-project-row]:hover) [data-project-row]:not(:hover) svg {
+    filter: saturate(0.6) brightness(0.95);
+  }
+}
+
 /* ── Scroll-reveal transitions ── */
 .hidden {
   opacity: 0;

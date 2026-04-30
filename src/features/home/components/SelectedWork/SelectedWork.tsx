@@ -57,15 +57,6 @@ export default function SelectedWork() {
         />
       ))}
 
-      {/* Footer row */}
-      <div className={`${styles.footerRow} ${revealed ? styles.visible : styles.hidden}`} style={{ transitionDelay: "0.35s" }}>
-        <span className={styles.archiveLabel}>
-          ARCHIVE / 14 EARLIER PROJECTS
-        </span>
-        <a href="/work" className={styles.viewAllButton}>
-          View all work &rarr;
-        </a>
-      </div>
     </section>
   );
 }

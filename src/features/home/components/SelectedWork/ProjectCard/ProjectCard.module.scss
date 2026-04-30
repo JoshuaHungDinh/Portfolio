@@ -173,6 +173,30 @@
   }
 }
 
+/* ── Hover: image scale + brightness ── */
+.imageBlock img,
+.imageBlock svg {
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.projectRow:hover .imageBlock img,
+.projectRow:hover .imageBlock svg {
+  transform: scale(1.03);
+  filter: brightness(1.05);
+}
+
+/* ── Hover: gradient shift on title ── */
+.projectName {
+  background-size: 200% 200%;
+  background-position: 0% 50%;
+  transition: background-position 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.projectRow:hover .projectName {
+  background-position: 100% 50%;
+}
+
 /* ── Scroll-reveal transitions ── */
 .hidden {
   opacity: 0;

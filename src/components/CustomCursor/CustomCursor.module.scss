@@ -1,0 +1,47 @@
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 12px;
+  height: 12px;
+  margin-left: -6px;
+  margin-top: -6px;
+  border-radius: 50%;
+  background: var(--accent-gradient);
+  pointer-events: none;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              height 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              margin 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.3s ease;
+  mix-blend-mode: difference;
+  will-change: transform;
+}
+
+.expanded {
+  width: 80px;
+  height: 80px;
+  margin-left: -40px;
+  margin-top: -40px;
+  background: #000;
+  mix-blend-mode: normal;
+}
+
+.label {
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity 0.2s ease 0.1s, transform 0.2s ease 0.1s;
+}
+
+.expanded .label {
+  opacity: 1;
+  transform: scale(1);
+}

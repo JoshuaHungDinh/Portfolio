@@ -186,7 +186,7 @@ function YieldStreamCaseStudy() {
               </p>
               <ul>
                 <li>
-                  <strong>Global score (25%)</strong> — Market signal.
+                  <strong>Global score (15%)</strong> — Market signal.
                   Aggregates anonymized funding outcomes from all
                   organizations with time-decay weighting. Deals from the
                   last 30 days get full weight; 90+ days get 0.2x. Answers:
@@ -202,7 +202,7 @@ function YieldStreamCaseStudy() {
                   60% with 3+ funded deals.
                 </li>
                 <li>
-                  <strong>Attribute score (25%)</strong> — Risk match. Does
+                  <strong>Attribute score (35%)</strong> — Risk match. Does
                   the merchant&apos;s financial profile (FICO, revenue, NSF
                   count, daily balance, position count) fit the lender&apos;s
                   stated buy box? Hard disqualification rules force the
@@ -282,9 +282,9 @@ function YieldStreamCaseStudy() {
               language="TypeScript"
               filename="lenderMatcher.ts"
               code={`const SCORING_WEIGHTS = {
-  global: 0.25,
+  global: 0.15,
   relationship: 0.5,
-  attribute: 0.25,
+  attribute: 0.35,
 };
 
 const RELATIONSHIP_MULTIPLIER = 1.15; // +15% for strong pull-through

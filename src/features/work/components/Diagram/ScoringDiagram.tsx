@@ -23,7 +23,7 @@ export default function ScoringDiagram() {
         {/* Global score */}
         <rect x="200" y="30" width="180" height="76" rx="8" fill="rgba(178,213,255,0.06)" stroke="rgba(178,213,255,0.25)" />
         <text x="290" y="56" textAnchor="middle" fill="#b2d5ff" fontSize="11" fontFamily="var(--font-mono)" fontWeight="600">GLOBAL SCORE</text>
-        <text x="290" y="73" textAnchor="middle" fill="#71717a" fontSize="10" fontFamily="var(--font-sans)">Market signals / 25%</text>
+        <text x="290" y="73" textAnchor="middle" fill="#71717a" fontSize="10" fontFamily="var(--font-sans)">Market signals / 15%</text>
         <text x="290" y="90" textAnchor="middle" fill="#52525b" fontSize="10" fontFamily="var(--font-sans)">Cross-org outcomes, time-decay</text>
 
         {/* Relationship score */}
@@ -35,7 +35,7 @@ export default function ScoringDiagram() {
         {/* Attribute score */}
         <rect x="200" y="230" width="180" height="76" rx="8" fill="rgba(178,213,255,0.06)" stroke="rgba(178,213,255,0.25)" />
         <text x="290" y="256" textAnchor="middle" fill="#b2d5ff" fontSize="11" fontFamily="var(--font-mono)" fontWeight="600">ATTRIBUTE SCORE</text>
-        <text x="290" y="273" textAnchor="middle" fill="#71717a" fontSize="10" fontFamily="var(--font-sans)">Risk match / 25%</text>
+        <text x="290" y="273" textAnchor="middle" fill="#71717a" fontSize="10" fontFamily="var(--font-sans)">Risk match / 35%</text>
         <text x="290" y="290" textAnchor="middle" fill="#52525b" fontSize="10" fontFamily="var(--font-sans)">Financials vs. buy box</text>
 
         {/* Arrows to composite */}

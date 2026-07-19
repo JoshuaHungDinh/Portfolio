@@ -1020,7 +1020,7 @@ function LedgerCaseStudy() {
             "AWS Lambda",
             "React",
           ]}
-          status="In production"
+          status="Not yet deployed"
           year="2025"
         />
 
@@ -1241,8 +1241,8 @@ function LedgerCaseStudy() {
           {/* ═══ 5. INFRASTRUCTURE ═══ */}
           <Section number="05" title="Infrastructure">
             <p>
-              Ledger runs on <strong>AWS Lambda</strong> behind API Gateway
-              v2, deployed as a Docker container image. The entire
+              Ledger is built to run on <strong>AWS Lambda</strong> behind
+              API Gateway v2, packaged as a Docker container image. The entire
               infrastructure is defined in Terraform — ECR repository, IAM
               roles, Lambda function, API Gateway, and CloudWatch log
               groups with 14-day retention. One{" "}

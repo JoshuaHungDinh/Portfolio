@@ -44,7 +44,7 @@ export const projects: Project[] = [
     name: "Ledger",
     trademark: "TM",
     description:
-      "Production document intelligence service for bank statements and tax returns. Multi-tier parsing pipeline, 14 bank templates, 25+ risk indicators, balance reconciliation, and PII redaction — extracted from YieldStream's underwriting platform as a standalone API.",
+      "Document intelligence service for bank statements and tax returns. Multi-tier parsing pipeline, 14 bank templates, 25+ risk indicators, balance reconciliation, and PII redaction — extracted from YieldStream's underwriting platform as a standalone API.",
     tags: [],
     visual: "image",
     imageSrc: "/ys-ledger-image.png",

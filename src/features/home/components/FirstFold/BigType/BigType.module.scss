@@ -63,11 +63,25 @@
   line-height: 1;
   letter-spacing: -0.04em;
   white-space: nowrap;
+  animation: fadeIn 0.5s ease-out both;
+}
+
+.wordWrap {
+  position: relative;
+  display: inline-grid;
+}
+
+.word {
+  grid-area: 1 / 1;
+  display: inline-flex;
+}
+
+.letter {
+  display: inline-block;
   background: var(--accent-gradient);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: fadeIn 0.5s ease-out both;
 }
 
 .tm {

@@ -50,6 +50,100 @@ export function ScrollLetter({
   );
 }
 
+/* ── Scroll-driven swap: "out" text fades away, "in" text fades in ── */
+
+interface SwapLetterProps {
+  letter: string;
+  index: number;
+  total: number;
+  direction: "out" | "in";
+  progress: MotionValue<number>;
+  className?: string;
+}
+
+function SwapLetter({
+  letter,
+  index,
+  total,
+  direction,
+  progress,
+  className = "",
+}: SwapLetterProps) {
+  // Spread each letter's animation across a portion of the 0→1 progress
+  const staggerSpan = 0.03;
+  const start = index * staggerSpan;
+
+  const opacity =
+    direction === "out"
+      ? useTransform(progress, [start, start + 0.3], [1, 0])
+      : useTransform(progress, [start + 0.15, start + 0.45], [0, 1]);
+
+  const y =
+    direction === "out"
+      ? useTransform(progress, [start, start + 0.3], [0, -30])
+      : useTransform(progress, [start + 0.15, start + 0.45], [30, 0]);
+
+  return (
+    <motion.span className={`${styles.letter} ${className}`} style={{ opacity, y }}>
+      {letter}
+    </motion.span>
+  );
+}
+
+interface StaggeredSwapProps {
+  outText: string;
+  inText: string;
+  letterClassName?: string;
+  className?: string;
+}
+
+export function StaggeredSwap({
+  outText,
+  inText,
+  letterClassName = "",
+  className = "",
+}: StaggeredSwapProps) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start 80%", "start 20%"],
+  });
+
+  const outLetters = outText.split("");
+  const inLetters = inText.split("");
+
+  return (
+    <span ref={ref} className={`${styles.swapWrap} ${className}`}>
+      <span className={styles.swapWord}>
+        {outLetters.map((letter, i) => (
+          <SwapLetter
+            key={`out-${i}`}
+            letter={letter}
+            index={i}
+            total={outLetters.length}
+            direction="out"
+            progress={scrollYProgress}
+            className={letterClassName}
+          />
+        ))}
+      </span>
+      <span className={styles.swapWord}>
+        {inLetters.map((letter, i) => (
+          <SwapLetter
+            key={`in-${i}`}
+            letter={letter}
+            index={i}
+            total={inLetters.length}
+            direction="in"
+            progress={scrollYProgress}
+            className={letterClassName}
+          />
+        ))}
+      </span>
+    </span>
+  );
+}
+
 /* ── In-view staggered text (used by project titles) ── */
 
 interface StaggeredTextProps {

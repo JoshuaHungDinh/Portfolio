@@ -1,0 +1,9 @@
+.wrapper {
+  display: inline-flex;
+  overflow: hidden;
+}
+
+.letter {
+  display: inline-block;
+  will-change: transform, opacity;
+}

@@ -3,6 +3,7 @@ import PlaceholderVisual from "../PlaceholderVisual/PlaceholderVisual";
 import Reveal from "@/components/Reveal/Reveal";
 import MagneticButton from "@/components/MagneticButton/MagneticButton";
 import NumberTicker from "@/components/NumberTicker/NumberTicker";
+import StaggeredText from "@/components/StaggeredText/StaggeredText";
 import styles from "./ProjectCard.module.scss";
 
 interface ProjectCardProps {
@@ -29,7 +30,7 @@ export default function ProjectCard({ project, reversed, revealed }: ProjectCard
               (<NumberTicker value={project.index} />) &mdash; {project.category}
             </p>
             <h3 className={styles.projectName}>
-              {project.name}
+              <StaggeredText text={project.name} letterClassName={styles.projectLetter} />
               {project.trademark && (
                 <sup className={styles.trademark}>
                   {project.trademark === "TM" ? "\u2122" : "\u00AE"}
@@ -63,7 +64,7 @@ export default function ProjectCard({ project, reversed, revealed }: ProjectCard
             (<NumberTicker value={project.index} />) &mdash; {project.category}
           </p>
           <h3 className={styles.projectName}>
-            {project.name}
+            <StaggeredText text={project.name} letterClassName={styles.projectLetter} />
             {project.trademark && (
               <sup className={styles.trademark}>
                 {project.trademark === "TM" ? "\u2122" : "\u00AE"}

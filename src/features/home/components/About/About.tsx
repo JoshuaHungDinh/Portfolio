@@ -11,7 +11,7 @@ export default function About() {
 
       {/* Large heading */}
       <Reveal delay={0.1}>
-        <h2 className={styles.displayHeading}>Joshua.</h2>
+        <h2 className={styles.displayHeading}>Joshua<span className={styles.gradientDot}>.</span></h2>
       </Reveal>
 
       <Reveal delay={0.2}>

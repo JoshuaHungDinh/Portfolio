@@ -82,11 +82,14 @@
   font-weight: 700;
   line-height: 1;
   letter-spacing: -0.04em;
+  margin-bottom: 24px;
+}
+
+.projectLetter {
   background: var(--accent-gradient);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 24px;
 }
 
 .trademark {
@@ -187,13 +190,13 @@
 }
 
 /* ── Hover: gradient shift on title ── */
-.projectName {
+.projectLetter {
   background-size: 200% 200%;
   background-position: 0% 50%;
   transition: background-position 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.projectRow:hover .projectName {
+.projectRow:hover .projectLetter {
   background-position: 100% 50%;
 }
 

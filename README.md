@@ -1,4 +1,4 @@
-# Joshua Dinh - Portfolio
+# Joshua H. Dinh - Portfolio
 
 A personal portfolio built with Next.js 16, React 19, and TypeScript. Designed to showcase full-stack product engineering work through interactive case studies and thoughtful micro-interactions.
 

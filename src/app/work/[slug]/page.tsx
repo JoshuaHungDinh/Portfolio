@@ -95,6 +95,9 @@ function YieldStreamCaseStudy() {
           ]}
           status="In production"
           year="2025"
+          links={[
+            { label: "Visit website", href: "https://yieldstream.ai/" },
+          ]}
         />
 
         <div className={styles.sections}>
@@ -596,6 +599,9 @@ function GiveWPCaseStudy() {
           ]}
           status="Open source"
           year="2022—2025"
+          links={[
+            { label: "GitHub", href: "https://github.com/impress-org/givewp" },
+          ]}
         />
 
         <div className={styles.sections}>
@@ -1022,6 +1028,12 @@ function LedgerCaseStudy() {
           ]}
           status="Not yet deployed"
           year="2025"
+          links={[
+            {
+              label: "GitHub",
+              href: "https://github.com/YieldStream-ai/Ledger",
+            },
+          ]}
         />
 
         <div className={styles.sections}>
@@ -1375,6 +1387,12 @@ function BubbleChatCaseStudy() {
           ]}
           status="Side project"
           year="2025"
+          links={[
+            {
+              label: "GitHub",
+              href: "https://github.com/JoshuaHungDinh/Bubble-Chat",
+            },
+          ]}
         />
 
         <div className={styles.sections}>

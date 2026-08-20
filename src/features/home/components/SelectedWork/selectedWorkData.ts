@@ -10,6 +10,7 @@ export interface Project {
   imageSrc?: string;
   label: string;
   href: string;
+  externalLink?: { label: string; href: string };
 }
 
 export const projects: Project[] = [
@@ -26,6 +27,7 @@ export const projects: Project[] = [
     imageSrc: "/ys-marketing-page.png",
     label: "YIELDSTREAM/PLATFORM",
     href: "/work/yieldstream",
+    externalLink: { label: "Visit website", href: "https://yieldstream.ai/" },
   },
   {
     index: "02",
@@ -40,6 +42,7 @@ export const projects: Project[] = [
     imageSrc: "/givewp-form.png",
     label: "GIVEWP/DONATION-FORM",
     href: "/work/givewp",
+    externalLink: { label: "GitHub", href: "https://github.com/impress-org/givewp" },
   },
   {
     index: "03",
@@ -54,6 +57,7 @@ export const projects: Project[] = [
     imageSrc: "/ys-ledger-image.png",
     label: "LEDGER/API",
     href: "/work/yieldstream-qualify",
+    externalLink: { label: "GitHub", href: "https://github.com/YieldStream-ai/Ledger" },
   },
   {
     index: "04",
@@ -68,5 +72,6 @@ export const projects: Project[] = [
     imageSrc: "/bubble-chat-image.png",
     label: "BUBBLECHAT/WIDGET",
     href: "/work/bubble-chat",
+    externalLink: { label: "GitHub", href: "https://github.com/JoshuaHungDinh/Bubble-Chat" },
   },
 ];

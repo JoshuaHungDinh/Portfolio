@@ -18,6 +18,31 @@ export default function ProjectCard({ project, reversed, revealed }: ProjectCard
   const textDelay = reversed ? 0.15 : 0;
   const imageDelay = reversed ? 0 : 0.15;
 
+  const actions = (
+    <div className={styles.actions}>
+      {project.externalLink && (
+        <MagneticButton>
+          <a
+            href={project.externalLink.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.externalLink}
+          >
+            {project.externalLink.label}
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+              <path d="M3.5 2.5h6v6M9.5 2.5L2.5 9.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </a>
+        </MagneticButton>
+      )}
+      <MagneticButton>
+        <a href={project.href} className={styles.caseStudyLink}>
+          Read case study <span className={styles.arrow}>&rarr;</span>
+        </a>
+      </MagneticButton>
+    </div>
+  );
+
   // For the first card: use parent's scroll-based revealed state
   // For all other cards: use IntersectionObserver via Reveal
   if (useScrollReveal) {
@@ -38,11 +63,7 @@ export default function ProjectCard({ project, reversed, revealed }: ProjectCard
               )}
             </h3>
             <p className={styles.projectDescription}>{project.description}</p>
-            <MagneticButton>
-              <a href={project.href} className={styles.caseStudyLink}>
-                Read case study <span className={styles.arrow}>&rarr;</span>
-              </a>
-            </MagneticButton>
+            {actions}
           </div>
         </div>
 
@@ -72,11 +93,7 @@ export default function ProjectCard({ project, reversed, revealed }: ProjectCard
             )}
           </h3>
           <p className={styles.projectDescription}>{project.description}</p>
-          <MagneticButton>
-            <a href={project.href} className={styles.caseStudyLink}>
-              Read case study <span className={styles.arrow}>&rarr;</span>
-            </a>
-          </MagneticButton>
+          {actions}
         </div>
       </Reveal>
 
